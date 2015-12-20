@@ -1,0 +1,11 @@
+﻿@using ShallvaMVC.Models
+
+@model  List<SubProductProperty>
+
+@if (Model.Count > 0)
+{
+    foreach (var prop in Model)
+    {
+        @Html.Partial("Partials/_SubProductPropRow", prop)
+    }
+}

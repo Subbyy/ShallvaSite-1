@@ -1,0 +1,106 @@
+﻿@using ShallvaMVC.Models;
+
+@{
+    ViewBag.Title = "ניהול קטגוריות";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    int mainCat = (int)Session["MainCategory"];
+    string mainCatName = Session["MainCategoryName"].ToString();
+}
+
+@model List<CategoryListItem>
+
+<div id="bc-cat">
+    <span class="crumb"><a href="@Url.Action("ManageMainCategories", "Admin")">@mainCatName</a></span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb current-crumb">ניהול קטגוריות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">תמונות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">טבלאות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">שורות</span>
+</div>
+
+<div id="current-title">
+    ניהול קטגוריות
+</div>
+
+<div id="search-cont">
+    @using (Ajax.BeginForm("SearchSubCategories", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterSearchSubCategories" }))
+    {
+        <label for="term">חפש בקטגוריות משניות</label>
+        <input type="text" class="form-control" id="term" name="term">
+        <button type="submit" class="btn">חפש</button>
+    }
+</div>
+
+<div id="add-new">
+    <button type="button" class="btn" data-toggle="modal" data-target="#add-new-main-cat">הוסף קטגוריה חדשה</button>
+</div>
+
+<div id="cat-list">
+    <div class="row cat-row headers">
+        <div class="col-md-5">
+            <a href="#">שם קטגוריה</a>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <a href="#">מספר בתצוגה</a>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    @foreach (var cat in Model)
+    {
+        @Html.Partial("Partials/_SubCategoryRow", cat)
+    }
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="add-new-sub-cat" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">הוספת קטגוריה משנית</h4>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("AddSubCategory", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterAddSubCategory" }))
+                {
+                    <div class="form-group">
+                        <label for="main-cat">שם קטגוריה משנית</label>
+                        <input type="text" class="form-control" id="subCat" name="subCat" placeholder="שם קטגוריה משנית">
+                    </div>
+                    <input type="hidden" id="mainCat" name="mainCat" value="@mainCat" />
+                    <button type="submit" class="btn btn-primary add-btn">הוסף</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#add-new > button').click(function () {
+                $('#add-new-sub-cat').modal('show');
+            });
+        });
+
+        function afterSearchSubCategories(data) {
+
+        }
+
+        function afterAddSubCategory(data) {
+            $('#cat-list').append(data.html);
+            $('#add-new-sub-cat').modal('hide');
+            var $target = $('html,body');
+            $target.animate({ scrollTop: $target.height() }, 1000);
+        }
+    </script>
+}

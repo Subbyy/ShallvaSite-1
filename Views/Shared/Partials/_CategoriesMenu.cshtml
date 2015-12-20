@@ -1,0 +1,28 @@
+﻿@using ShallvaMVC.Models
+
+@model  List<CategoryListItem>
+
+<ul>
+    <li>
+        <a href="@Url.Action("ProductsList", "Products")">כל המוצרים</a>
+    </li>
+
+    @foreach (var category in Model)
+    {
+        <li>
+            <a href="@Url.Action("ProductsList", "Products", new { categoryId = category.Id })">@Html.Raw(category.Name)</a>
+            @if (category.SubCategories != null && category.SubCategories.Count > 0)
+            {
+                <ul>
+                    @foreach (var subCategory in category.SubCategories)
+                    {
+                        <li>
+                            <a href="@Url.Action("ProductsList", "Products", new { categoryId = category.Id, subCategoryId = subCategory.Id })">@Html.Raw(subCategory.Name)</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+
+</ul>

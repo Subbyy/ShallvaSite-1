@@ -1,0 +1,222 @@
+﻿@using ShallvaMVC.Models
+@model Workshops
+
+@{
+    ViewBag.Title = "סדנאות ב\"שלווה\" רשל\"צ";
+}
+
+<div id="workshop">
+    <div class="row">
+        <div class="col-xs-12 title">
+            <h3>@ViewBag.Title</h3>
+        </div>
+    </div>
+    <div class="workshopMonth row">
+        <div class="col-xs-8 pull-right text-right">
+            <h3>חודש דצמבר 2015</h3>
+            <div class="dtls">
+                <div>להרשמה: זהבה 052-6279048</div>
+                <div>shallvasadna@gmail.com</div>
+                <div><a id="sdn-ct" href="#" data-toggle="modal" data-target="#sadna-ct">צרו קשר</a></div>
+            </div>
+        </div>
+        <div class="col-xs-4 pull-left">
+            <img class="pull-left" src="~/Content/Images/workshops/ititle.jpg" alt="ititle" />
+            <span class="gift text-right">**מתנה לכל משתתף!</span>
+        </div>
+    </div>
+
+    <div class="row comment">
+        <span class="text-right">
+         כל הסדנאות מעשיות וכוללות חומרים.
+            <br />
+         (אלא אם צוין אחרת)
+        </span>
+    </div>
+
+    <div class="row choose-workshop">
+        <div class="col-xs-6 pull-right">
+            <h4 class="text-right">סדנאות לילדים ונוער</h4>
+            <img class="pull-right kids" src="~/Content/Images/workshops/kids.jpg" alt="kids"/>
+        </div>
+        <div class="col-xs-6 pull-left">
+            <h4 class="text-right">סדנאות וקורסים למבוגרים</h4>
+            <img class="pull-left adults" src="~/Content/Images/workshops/adults.jpg" alt="adults" />
+        </div>
+    </div>
+
+    <div id="adultsTbl" class="sTable table-responsive text-right hide">
+        <h3>סדנאות למבוגרים</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>תאריך</th>
+                    <th style="padding: 8px 0;">שם הסדנא</th>
+                    <th>מדריכה</th>
+                    <th>מחיר</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="dt">
+                        <div class="day">יום שלישי 01.12.15</div>
+                        <div class="time">משעה 10:00 בבוקר עד שעה 13:00</div>
+                    </td>
+                    <td>עיצוב עוגות בבצק סוכר. מבוגרים ונוער</td>
+                    <td>שירננה</td>
+                    <td>250 ₪ למשתתף כולל עוגה וחומרים</td>
+                    <td>
+                        <img alt="" src="~/Content/Images/workshops/sugar.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="dt">
+                        <div class="day">יום שלישי 08.12.15</div>
+                        <div class="time">משעה 10:00 בבוקר עד שעה 13:00</div>
+                    </td>
+                    <td class="nm">סדנא ללימוד טכניקות זילופים מעל עוגה, וציור דמות בקרם. מבוגרים ונוער</td>
+                    <td class="gd">שירננה</td>
+                    <td class="pc">250 ₪ למשתתף כולל עוגה וחומרים</td>
+                    <td class="img">
+                        <img alt="" src="~/Content/Images/workshops/ziluf.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="dt">
+                        <div class="day">יום רביעי 09.12.15</div>
+                        <div class="time">משעה 16:00 עד שעה 19:00</div>
+                    </td>
+                    <td class="nm">עיצוב עוגות בבצק סוכר. מבוגרים ונוער</td>
+                    <td class="gd">שירננה</td>
+                    <td class="pc">250 ₪ למשתתף כולל עוגה וחומרים</td>
+                    <td class="img">
+                        <img alt="" src="~/Content/Images/workshops/sugar.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="dt">
+                        <div class="day">יום שלישי 15.12.15</div>
+                        <div class="time">משעה 16:00 עד שעה 19:00</div>
+                    </td>
+                    <td class="nm">סדנא ללימוד טכניקות זילופים מעל עוגה, וציור דמות בקרם. מבוגרים ונוער</td>
+                    <td class="gd">שירננה</td>
+                    <td class="pc">250 ₪ למשתתף כולל עוגה וחומרים</td>
+                    <td class="img">
+                        <img alt="" src="~/Content/Images/workshops/ziluf.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="dt">
+                        <div class="day">יום רביעי 16.12.15</div>
+                        <div class="time">משעה 17:00 עד שעה 20:00</div>
+                    </td>
+                    <td class="nm">עיצוב פרחי ג'לטין מרהיבים קינוחי פרווה. מבוגרים</td>
+                    <td class="gd">פרידה הנדל</td>
+                    <td class="pc">280 ₪ למשתתף כולל חומרים</td>
+                    <td class="img">
+                        <img alt="" src="~/Content/Images/workshops/gelatin.jpg">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="kidsTbl" class="sTable table-responsive text-right hide">
+        <h3>סדנאות לילדים</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>תאריך</th>
+                    <th style="padding: 8px 0;">שם הסדנא</th>
+                    <th>מדריכה</th>
+                    <th>מחיר</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="dt">
+                        <div class="day">יום חמישי 03.12.15</div>
+                        <div class="time">משעה 16:00 עד שעה 17:30</div>
+                    </td>
+                    <td>סדנא לכבוד חנוכה לילדים, עיצוב דמות אוחזת בנר או חנוכייה מבצק סוכר וסביבון.</td>
+                    <td>אור ארדלי בנו</td>
+                    <td>80 ₪ לילד</td>
+                    <td>
+                        <img alt="" src="~/Content/Images/workshops/sugar2.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="dt">
+                        <div class="day">יום חמישי 10.12.15</div>
+                        <div class="time">משעה 11:00 עד שעה 12:30</div>
+                    </td>
+                    <td class="nm">סדנת הכנת סושי TEMAKI לילדים  ונוער</td>
+                    <td class="gd">אלה בר-לב</td>
+                    <td class="pc">80 ₪ לילד כולל חומרים</td>
+                    <td class="img">
+                        <img alt="" src="~/Content/Images/workshops/sushi.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="dt">
+                        <div class="day">יום ראשון 13.12.15</div>
+                        <div class="time">משעה 11:00 עד שעה 12:30</div>
+                    </td>
+                    <td class="nm">סדנת שוקולד הורה וילד מגיל 6</td>
+                    <td class="gd">ליהי  שובל</td>
+                    <td class="pc">150 ₪ להורה + ילד אחד. ילד נוסף 60 ₪ כולל חומרים</td>
+                    <td class="img">
+                        <img alt="" src="~/Content/Images/workshops/chocolate.jpg">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="dt">
+                        <div class="day">יום שני 14.12.15</div>
+                        <div class="time">משעה 11:00 עד שעה 12:30</div>
+                    </td>
+                    <td class="nm">סדנא ללימוד טכניקת זילוף. נזלף בקרם. חיות מעל קאפקייקס . לילדים</td>
+                    <td class="gd">אילנית בנו</td>
+                    <td class="pc">80 ₪ לילד כולל 3 קאפקייקס למשתתף</td>
+                    <td class="img">
+                        <img alt="" src="~/Content/Images/workshops/animals.jpg">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row conditions text-right">
+        <div class="info">
+            <h4>תנאי הרשמה וביטול השתתפות בסדנאות</h4>
+            <p>הודעה על ביטול ההשתתפות שתינתן עד 4 ימים לפני הסדנא – תחוייב בדמי הרשמה בעלות 10% מעלות הסדנא.</p>
+            <p>הודעה על ביטול שתינתן במועד מאוחר יותר – תחוייב ב-50% מעלות הסדנא.</p>
+            <p>אי הגעה לסדנא או ביטול ביום הסדנא, יחוייבו בתשלום מלא.</p>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("Partials/_WorkshopModal", new ContactModal())
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('.choose-workshop img').click(function () {
+            if ($(this).hasClass('kids')) {
+                $('#adultsTbl').removeClass('hide').addClass('hide');
+                $('#kidsTbl').removeClass('hide');
+            } else {
+                $('#kidsTbl').removeClass('hide').addClass('hide');
+                $('#adultsTbl').removeClass('hide');
+            }
+        });
+
+        $('#sadna-ct .close').click(function () {
+            $('#sadna-ct form')[0].reset();
+        });
+
+        function afterSendContact(data) {
+            $('#sadna-ct .close').click();
+        }
+    </script>
+}

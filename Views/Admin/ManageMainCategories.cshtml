@@ -1,0 +1,102 @@
+﻿@using ShallvaMVC.Models;
+
+@{
+    ViewBag.Title = "ניהול קטגוריות ראשיות";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model List<CategoryListItem>
+
+<div id="bc-cat">
+    <span class="crumb current-crumb">ניהול קטגוריות ראשיות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">קטגוריות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">תמונות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">טבלאות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">שורות</span>
+</div>
+
+<div id="current-title">
+    ניהול קטגוריות ראשיות
+</div>
+
+<div id="search-cont">
+    @using (Ajax.BeginForm("SearchMainCategories", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterSearchMainCategories" }))
+    {
+        <label for="term">חפש בקטגוריות ראשיות</label>
+        <input type="text" class="form-control" id="term" name="term">
+        <button type="submit" class="btn">חפש</button>
+    }
+</div>
+
+<div id="add-new">
+    <button type="button" class="btn" data-toggle="modal" data-target="#add-new-main-cat">הוסף קטגוריה ראשית חדשה</button>
+</div>
+
+<div id="cat-list">
+    <div class="row cat-row headers">
+        <div class="col-md-5">
+            <a href="#">קטגוריה ראשית</a>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <a href="#">מספר בתצוגה</a>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+    @foreach (var cat in Model)
+    {
+        @Html.Partial("Partials/_MainCategoryRow", cat)
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="add-new-main-cat" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">הוספת קטגוריה ראשית</h4>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("AddMainCategory", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterAddMainCategory" }))
+                {
+                    <div class="form-group">
+                        <label for="main-cat">שם קטגוריה ראשית</label>
+                        <input type="text" class="form-control" id="categoryName" name="categoryName" required placeholder="שם קטגוריה ראשית">
+                    </div>
+                    <button type="submit" class="btn btn-primary add-btn">הוסף</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#add-new > button').click(function () {
+                $('#add-new-main-cat').modal('show');
+            });
+        });
+
+        function afterSearchMainCategories(data) {
+
+        }
+
+        function afterAddMainCategory(data) {
+            $('#cat-list').append(data.html);
+            $('#add-new-main-cat').modal('hide');
+            var $target = $('html,body');
+            $target.animate({ scrollTop: $target.height() }, 1000);
+        }
+    </script>
+}

@@ -1,0 +1,91 @@
+﻿@using ShallvaMVC.Models;
+
+@{
+    ViewBag.Title = "מוצרים";
+    List<CategoryListItem> tags = ViewData["CategoriesTags"] as List<CategoryListItem>;
+    var nextCategory = ViewData["NextCategory"] == null ? null : ViewData["NextCategory"] as CategoryListItem;
+    int catCount = Model.Count;
+    int category = (int)ViewData["Category"];
+    int subCategory = (int)ViewData["SubCategory"];
+}
+
+@model List<Product>
+
+@section pageTitle
+{
+    <h1>
+        <span>מוצרים</span>
+        @if (category != -1)
+        {
+            <span> >> @Html.Raw(Model.First(x => x.CategoryId == category).CategoryName)</span>
+            if (subCategory != -1 && Model.Any(x => x.SubCategoryId == subCategory))
+            {
+                <span> >> @Html.Raw(Model.First(x => x.SubCategoryId == subCategory).SubCategoryName)</span>
+            }
+        }
+    </h1>
+
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <ul id="products-list">
+            @Html.Partial("Partials/_ProdcutsItems", Model)
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <ul id="cat-tags">
+            <li class="tag"><a href="@Url.Action("ProductsList", "Products")">כל המוצרים</a></li>
+            @foreach (var t in tags)
+            {
+                <li class="tag"><a href="@Url.Action("ProductsList", "Products", new { categoryId = t.Id})">@Html.Raw(t.Name)</a></li>
+            }
+        </ul>
+    </div>
+</div>
+@section scripts
+{
+    @if (subCategory != -1)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var el = '#products-list .product[data-sc=@subCategory]';
+                var offset = $('#products-list').offset().top;
+
+                $('html, body').animate({
+                    scrollTop: $(el).first().offset().top - offset
+                }, 1000);
+            });
+        </script>
+    }
+
+    @*<script type="text/javascript">
+        var isPaging = true;
+        var pageNumber = 1;
+
+        $(document).ready(function () {
+            $(window).scroll(function () {
+                if (isPaging) {
+                    if ($(window).scrollTop() + $(window).height() > $(document).height() - 350) {
+                        $.ajax({
+                            method: "POST",
+                            url: '@Url.Action("GetNextProducts", "Products")',
+                            //contentType: false,
+                            //dataType: "json",
+                            data: {
+                                categoryId: @(category > 0 ? category.ToString() : "null"),
+                                page: ++pageNumber
+                            },
+                            success: function (data) {
+                                $('#products-list').append(data.html);
+                                isPaging = !data.lastPage;
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>*@
+}

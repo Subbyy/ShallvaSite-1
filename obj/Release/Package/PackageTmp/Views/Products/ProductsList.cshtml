@@ -1,0 +1,101 @@
+﻿@using ShallvaMVC.Models;
+
+@{
+    ViewBag.Title = "מוצרים";
+    var nextCategory = ViewData["NextCategory"] == null ? null : ViewData["NextCategory"] as CategoryListItem;
+    int catCount = Model.Count;
+    List<CategoryListItem> tags = ViewData["CategoriesTags"] as List<CategoryListItem>;
+    int category = (int)ViewData["Category"];
+    int subCategory = (int)ViewData["SubCategory"];
+}
+
+@model List<Product>
+
+@section pageTitle
+{
+    <h1>
+        <span>מוצרים</span>
+    @if (category != -1)
+    {
+        <span>>> @Html.Raw(Model.First(x => x.CategoryId == category).CategoryName)</span>
+        if (subCategory != -1)
+        {
+            <span>>> @Html.Raw(Model.First(x => x.SubCategoryId == subCategory).SubCategoryName)</span>
+        }
+    }
+    </h1>
+
+}
+
+<div id="products-list" class="row">
+    <div class="col-md-12">
+        @for (int i = 0; i < catCount; i += 4)
+        {
+            <div class="row prow">
+                @for (int j = i; j < i + 4 && j < catCount; j++)
+                {
+                    Product p = Model[j];
+                    <div class="col-md-3 product" data-sc="@p.SubCategoryId">
+                        <div class="portfolio-item">
+                            <div class="portfolio-image">
+                                <a href="@Url.Action("Product", "Products", new { productId = p.Id})">
+                                    <img src="~/Content/Images/small_images/@p.SmallImageName" alt="@Html.Raw(p.Name)">
+                                </a>
+                            </div>
+                            <div class="portfolio-info-fade">
+                                <ul>
+                                    <li class="read-more"><a href="@Url.Action("Product", "Products", new { productId = p.Id})" class="btn"><span>לפרטים נוספים</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <label>@Html.Raw(p.Name)</label>
+                    </div>
+
+                    if (j == catCount - 1 && nextCategory != null)
+                    {
+                        <div class="col-md-3 product">
+                            <div class="portfolio-item">
+                                <div class="portfolio-image">
+                                    <a href="@Url.Action("ProductsList", "Products", new { categoryId = nextCategory.Id})">
+                                        <img src="~/Content/Images/small_images/nextCatImg.jpg" alt="@Html.Raw(nextCategory.Name)">
+                                    </a>
+                                </div>
+                                <div class="portfolio-info-fade">
+                                    <ul>
+                                        <li class="read-more"><a href="@Url.Action("ProductsList", "Products", new { categoryId = nextCategory.Id})" class="btn"><span>לפרטים נוספים</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <label>לקטגוריית @Html.Raw(nextCategory.Name)</label>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<ul id="cat-tags">
+    <li class="tag"><a href="@Url.Action("ProductsList", "Products")">כל המוצרים</a></li>
+    @foreach (var t in tags)
+    {
+        <li class="tag"><a href="@Url.Action("ProductsList", "Products", new { categoryId = t.Id})">@Html.Raw(t.Name)</a></li>
+    }
+</ul>
+
+@section scripts
+{
+    @if (subCategory != -1)
+    {
+        <script type="text/javascript">
+            $(function () {
+                var el = '#products-list .product[data-sc=@subCategory]';
+                var header = 210;
+
+                $('html, body').animate({
+                    scrollTop: $(el).first().offset().top - header
+                }, 1000);
+            });
+        </script>
+    }
+}

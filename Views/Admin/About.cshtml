@@ -1,0 +1,25 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section head
+{
+    <meta charset="utf-8">
+}
+
+@model string
+
+@using (Html.BeginForm("About", "Admin", FormMethod.Post))
+{
+    <textarea id="aboutText" name="aboutText">@Model</textarea>
+    <button type="submit">עדכן</button>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/ckeditor/ckeditor.js?v=2"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('aboutText');
+    </script>
+}

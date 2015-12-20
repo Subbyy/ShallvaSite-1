@@ -1,0 +1,191 @@
+﻿@using ShallvaMVC.Models;
+
+@{
+    ViewBag.Title = "ניהול תמונות";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    int mainCat = (int)Session["MainCategory"];
+    string mainCatName = Session["MainCategoryName"].ToString();
+    string currentCatName = Session["SubCatName"].ToString();
+
+    int? subCat = null;
+    if (Session["SubCat"] != null)
+    {
+        subCat = (int)Session["SubCat"];
+    }
+
+}
+
+@model List<PictureProduct>
+
+<div id="bc-cat">
+    <span class="crumb"><a href="@Url.Action("ManageMainCategories", "Admin")">@mainCatName</a></span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb"><a href="@Url.Action("ManageSubCategories", "Admin", new { mainCat = mainCat})">@currentCatName</a></span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb current-crumb">ניהול תמונות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">טבלאות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">שורות</span>
+</div>
+
+<div id="current-title">
+    ניהול תמונות
+</div>
+
+<div id="search-cont">
+    @using (Html.BeginForm("ManageProducts", "Admin"))
+    {
+        <label for="term">חפש בתמונות</label>
+        <input type="text" class="form-control" id="search" name="search" />
+
+        if (subCat.HasValue)
+        {
+            <input type="hidden" value="@subCat.Value" id="category" name="category" />
+        }
+        <input type="hidden" id="catName" name="catName" value="@currentCatName" />
+
+        <button type="submit" class="btn">חפש</button>
+    }
+</div>
+
+<div id="add-new">
+    <button type="button" class="btn" data-toggle="modal" data-target="#add-new-pic">הוסף תמונה חדשה</button>
+</div>
+
+
+<div id="cat-list">
+    <div class="row cat-row headers">
+        <div class="col-md-1"></div>
+        <div class="col-md-2">שם תמונה</div>
+        <div class="col-md-2"></div>
+        <div class="col-md-1">סדר בתצוגה</div>
+        <div class="col-md-1">הצג באתר</div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+    </div>
+    @foreach (var pic in Model)
+    {
+        @Html.Partial("Partials/_ProductPicRow", pic)
+    }
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="add-new-pic" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">הוספת תמונה</h4>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("DummayUpload", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterAddPic" }, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group">
+                        <label for="banner">תמונה קטנה</label>
+                        <input type="file" name="sp" id="sp" accept="image/*" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="banner">תמונה גדולה</label>
+                        <input type="file" name="bp" id="bp" accept="image/*" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="main-cat">שם תמונה</label>
+                        <input type="text" class="form-control" id="title" name="title" required placeholder="שם תמונה">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary add-btn">הוסף</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="no-img" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">קובץ לא תקין</h4>
+            </div>
+            <div class="modal-body">
+                <p>לא ניתן להעלות קבצים שאינם תמונות. נסה שוב.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/uploadfiles.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#add-new > button').click(function () {
+                $('#add-new-pic').modal('show');
+            });
+        });
+
+        $(document).on('click', '.pic-row .click', function(){
+            var title = $(this).parents('.pic-row').data('title');
+            var id = $(this).parents('.pic-row').data('id');
+            window.location.href = '@Url.Action("ManageProductTables", "Admin")?title=' + title + '&pic=' + id;
+        });
+
+        function ajaxFileUpload() {
+            $.ajaxFileUpload({
+                url: "@Url.Action("UploadAttachment", "Admin")",
+                secureuri: false,
+                fileElementId: 'sp',
+                data: { },
+                success: function (data1) {
+                    var obj1 = eval("data = " + data1.all[3].innerText);
+                    $.ajaxFileUpload({
+                        url: "@Url.Action("UploadAttachment", "Admin")",
+                        secureuri: false,
+                        fileElementId: 'bp',
+                        data: {},
+                        success: function (data2) {
+                            var obj2 = eval("data = " + data2.all[3].innerText);
+                            $.ajax({
+                                method: "POST",
+                                url: '@Url.Action("AddPictureProduct", "Admin")',
+                                data: {
+                                    bigImg: obj2.filename,
+                                    smallImg: obj1.filename,
+                                    title: $('#title').val(),
+                                    mainCatId: @mainCat,
+                                    subCatId:@subCat.Value,
+                                    mainCatName:'@mainCatName',
+                                    subCatName:'@currentCatName'
+                                },
+                                success: function (data) {
+                                    $('#sp,#bp,#title').val('');
+                                    $('#cat-list').append(data.html);
+                                    $('#add-new-pic').modal('hide');
+                                    var $target = $('html,body');
+                                    $target.animate({ scrollTop: $target.height() }, 1000);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+            return false;
+        }
+
+        function afterAddPic(data) {
+            if (data.success) {
+                ajaxFileUpload();
+            }
+            else {
+                $('#no-img').modal('show');
+            }
+        }
+    </script>
+}

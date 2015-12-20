@@ -1,0 +1,16 @@
+﻿@model ShallvaMVC.Models.SiteUser
+
+<div class="row cat-row" data-id="@Model.Id">
+    <div class="col-md-2 name">@Model.Name</div>
+    <div class="col-md-2 email">@Model.Email</div>
+    <div class="col-md-2 phone">@Model.Phone</div>
+    <div class="col-md-2 username">@Model.UserName</div>
+    <div class="col-md-2"><a class="reset-pass link">אפס סיסמה</a></div>
+    <div class="col-md-1 edit">
+        <a class="edit-user"><i class="glyphicon glyphicon-pencil"></i></a>
+    </div>
+    <div class="col-md-1 remove">
+        <a class="remove-user"><i class="glyphicon glyphicon-remove"></i></a>
+    </div>
+</div>
+

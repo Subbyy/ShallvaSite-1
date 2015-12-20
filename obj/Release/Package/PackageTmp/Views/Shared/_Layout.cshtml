@@ -1,0 +1,111 @@
+﻿@using Microsoft.AspNet.Identity;
+@using ShallvaMVC.Models;
+@using ShallvaMVC.Utils;
+
+@{
+    if (ViewBag.ReturnUrl == null)
+    {
+        ViewBag.ReturnUrl = Url.Action("Index", "Home");
+    }
+
+    bool userConnected = Request.IsAuthenticated;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שלווה @ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("header", required: false)
+</head>
+<body>
+    <div id="top-header" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div id="basad" class="row tar">
+                <div class="=col-md-12">
+                    בס"ד
+                </div>
+            </div>
+            <div id="header-content" class="row tar">
+                <div id="qshd" class="col-md-4">
+                    <div id="quick-search">
+                        @using (Html.BeginForm())
+                        {
+                            <input type="text" placeholder="חיפוש מהיר" />
+                            <span class="ico glyphicon glyphicon-search"></span>
+                        }
+                    </div>
+                    <div id="header-details">
+                        <div>אישי בשבילך - אדם: <span class="pn">054-5688304</span> </div>
+                        <div>מהיבואן לצרכן ובסיטונאות</div>
+                    </div>
+                </div>
+                <div id="logo" class="col-md-4">&nbsp;</div>
+                <div id="welcome" class="col-md-4 @(userConnected ? "user-on" : "user-off")">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <div>ברוך הבא, <span id="user-name">@User.Identity.GetUserName()</span> <span class="small-text">(<a href="javascript:document.getElementById('logoutForm').submit()">התנתק</a>)</span></div>
+                        <div><a href="#">היסטורית הזמנות</a></div>
+                    }
+                    else
+                    {
+                        @:@Html.Partial("Partials/_LoginForm", new LoginViewModel())
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu">
+        <ul>
+            <li><a href="@Url.Action("Index", "Home")">דף הבית</a></li>
+            <li><a href="@Url.Action("About", "Home")">אודות</a></li>
+            <li id="products">
+                <a href="@Url.Action("ProductsList", "Products")">מוצרים</a>
+                @Html.Partial("Partials/_CategoriesMenu", DataProvider.GetCategories())
+            </li>
+            <li><a href="@Url.Action("Contact", "Home")">צור קשר</a></li>
+            @if (Request.IsAuthenticated)
+            {
+                <li><a href="/">עגלת קניות</a></li>
+            }
+        </ul>
+        <img class="pull-left" src="~/Content/Images/shabat.png" />
+    </div>
+
+    <div id="main-content" class="container body-content">
+        @if (IsSectionDefined("pageTitle"))
+        {
+            <div id="page-title">
+                @RenderSection("pageTitle", required: false)
+            </div>
+        }
+
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div id="footer">
+            <a id="to-top" class="ico glyphicon glyphicon-arrow-up"></a>
+            <span>כל הזכויות שמורות &copy; @DateTime.Now.Year. התמונות להמחשה בלבד ט.ל.ח</span>
+        </div>
+    </footer>
+
+    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @:@Html.AntiForgeryToken()
+    }
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/shallva.js"></script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

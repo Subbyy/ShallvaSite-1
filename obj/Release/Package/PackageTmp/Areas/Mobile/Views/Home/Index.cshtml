@@ -1,0 +1,22 @@
+﻿@using ShallvaMVC.Models
+@{
+    List<BennerGalleryItem> banners = ViewData["Banners"] as List<BennerGalleryItem>;
+}
+
+<div class="row">
+    @* main blocks *@
+    @foreach (var block in banners)
+    {
+        <div class="col-xs-12 main-block">
+            <div class="row">
+                <div class="col-xs-7">
+                    <img class="model" src="~/Content/Images/@block.ImageName" alt="@block.Title">
+                </div>
+                <div class="col-xs-5">
+                    <h2>@block.Title</h2>
+                    <h3>@block.SubTitle</h3>
+                </div>
+            </div>
+        </div>
+    }
+</div>

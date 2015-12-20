@@ -1,0 +1,52 @@
+﻿@using ShallvaMVC.Models;
+
+@model List<Product>
+
+@{
+    var nextCategory = ViewData["NextCategory"] == null ? null : ViewData["NextCategory"] as CategoryListItem;
+    int catCount = Model.Count;
+    int category = (int)ViewData["Category"];
+    int subCategory = (int)ViewData["SubCategory"];
+    bool lastPage = false;
+}
+
+@for (int i = 0; i < catCount; i++)
+{
+    Product p = Model[i];
+
+    <li class="product" data-sc="@p.SubCategoryId">
+        <label>@Html.Raw(p.Name)</label>
+        <div class="portfolio-item">
+            <div class="portfolio-image">
+                <a href="@Url.Action("Product", "Products", new { productId = p.Id})">
+                    <img src="~/Content/Images/small_images/@p.SmallImageName" alt="@Html.Raw(p.Name)">
+                </a>
+            </div>
+            <div class="portfolio-info-fade">
+                <ul>
+                    <li class="read-more"><a href="@Url.Action("Product", "Products", new { productId = p.Id})" class="btn"><span>לפרטים נוספים</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </li>
+
+    if (lastPage && i == catCount - 1 && nextCategory != null)
+    {
+        <li class="product">
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <a href="@Url.Action("ProductsList", "Products", new { categoryId = nextCategory.Id})">
+                        <img src="~/Content/Images/small_images/nextCatImg.jpg" alt="@Html.Raw(nextCategory.Name)">
+                    </a>
+                </div>
+                <div class="portfolio-info-fade">
+                    <ul>
+                        <li class="read-more"><a href="@Url.Action("ProductsList", "Products", new { categoryId = nextCategory.Id})" class="btn"><span>לפרטים נוספים</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <label>לקטגוריית @Html.Raw(nextCategory.Name)</label>
+        </li>
+    }
+
+}

@@ -1,0 +1,24 @@
+﻿@using ShallvaMVC.Models
+
+@model PictureProduct
+
+<div class="row cat-row pic-row" data-id="@Model.Id" data-title="@Model.Title" data-order="@Model.OrderId">
+    <div class="col-md-1 click"><span>@Model.SubCategoryName</span></div>
+    <div class="col-md-2 click"><span>@Model.Title</span></div>
+    <div class="col-md-2 click"><img alt="@Model.Title" src="~/Content/Images/@Model.ImageName" /></div>
+    <div class="col-md-1">@Model.OrderId</div>
+    <div class="col-md-1">@Html.CheckBox("IsActive", Model.IsActive, new { @class = "display-pic-cb" })</div>
+    <div class="col-md-1 move-down">
+        <a href="#"><i class="glyphicon glyphicon-share-alt down"></i></a>
+    </div>
+    <div class="col-md-1 move-up">
+        <a href="#"><i class="glyphicon glyphicon-share-alt up"></i></a>
+    </div>
+    <div class="col-md-1 edit">
+        <a href="#"><i class="glyphicon glyphicon-pencil"></i></a>
+    </div>
+    <div class="col-md-1"><a href="#">העבר קטגוריה</a></div>
+    <div class="col-md-1 remove">
+        <a href="#"><i class="glyphicon glyphicon-remove"></i></a>
+    </div>
+</div>

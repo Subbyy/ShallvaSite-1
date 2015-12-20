@@ -1,0 +1,145 @@
+﻿@using ShallvaMVC.Models;
+
+@{
+    ViewBag.Title = "דף הבית";
+
+    List<BennerGalleryItem> banners = ViewData["Banners"] as List<BennerGalleryItem>;
+
+    bool hasCart = ViewData["HasCart"] == null ? false : true;
+}
+
+@section header
+{
+    <link href="~/Content/sequencejs-theme.modern-slide-in.css" rel="stylesheet" />
+    <link href="~/Content/sequencejs-theme.modern-slide-in.ie.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div id="banners" class="col-lg-12">
+        <i id="prev" class="prev action ico glyphicon glyphicon-circle-arrow-left"></i>
+        <i id="next" class="next action ico glyphicon glyphicon-circle-arrow-right"></i>
+        <div id="sequence">
+            <ul style="">
+                @foreach (BennerGalleryItem b in banners)
+                {
+                    <li>
+                        <h2 class="title animate-in">@b.Title</h2>
+                        <h3 class="subtitle animate-in">@b.SubTitle</h3>
+                        <img class="model" src="~/Content/Images/@b.ImageName" alt="@b.Title">
+                    </li>
+                }
+            </ul>
+        </div>
+        <ul id="nav" style="display: block;">
+            @foreach (BennerGalleryItem b in banners)
+            {
+                <li>
+                    <img src="~/Content/Images/@b.ImageName" alt="@b.Title">
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="row" id="additions">
+    <div class="col-md-6">
+        <h3>
+            <u>שעות פתיחה:</u>
+        </h3>
+        <p>
+            א-ה 9:00-21:00
+            <br />
+            ו 8:00-15:00
+            <br />
+            עסק שומר שבת - שעה מצאת השבת - 22:00
+            <br />
+            טלפון: 03-5511916
+        </p>
+    </div>
+    <div class="col-md-6">
+        <h2>
+            <u>חדש - סניף ראשון לציון </u>
+        </h2>
+        <p>
+            רח' לישנסקי 18, מתחם מוצצים
+            <br />
+            חניה חינם ובשפע
+            <br />
+        </p>
+    </div>
+</div>
+@if (hasCart)
+{
+    <div class="modal fade" id="cart" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>לידיעתך, קיימת הזמנה שלא אישרת!</p>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button id="new-order" class="btn btn-primary add-btn">הזמנה חדשה</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary add-btn">המשך הזמנה קיימת</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts
+{
+    <script src="~/Scripts/sequence.jquery.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var options = {
+                nextButton: true,
+                prevButton: true,
+                animateStartingFrameIn: true,
+                transitionThreshold: 250,
+                preloadTheseFrames: [1],
+                preloadTheseImages: [
+                    "images/tn-model1.png",
+                    "images/tn-model2.png",
+                    "images/tn-model3.png"
+
+                ]
+            };
+
+            var sequence = $("#sequence").sequence(options).data("sequence");
+
+            sequence.afterLoaded = function () {
+                $("#nav").fadeIn(100);
+                $("#nav li:nth-child(" + (sequence.settings.startingFrameID) + ") img").addClass("active");
+            }
+
+            sequence.beforeNextFrameAnimatesIn = function () {
+                $("#nav li:not(:nth-child(" + (sequence.nextFrameID) + ")) img").removeClass("active");
+                $("#nav li:nth-child(" + (sequence.nextFrameID) + ") img").addClass("active");
+            }
+
+            $("#nav li").click(function () {
+                if (!sequence.active) {
+                    $(this).children("img").removeClass("active").children("img").addClass("active");
+                    sequence.nextFrameID = $(this).index() + 1;
+                    sequence.goTo(sequence.nextFrameID);
+                }
+            });
+        });
+    </script>
+
+    @if (hasCart)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#cart').modal('show');
+            });
+        </script>
+    }
+}

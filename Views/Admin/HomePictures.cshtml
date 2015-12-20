@@ -1,0 +1,157 @@
+﻿@using ShallvaMVC.Models;
+
+@model List<BennerGalleryItem>
+
+@{
+    ViewBag.Title = "תמונות מתחלפות";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    string filename = (string)ViewData["FileName"];
+}
+
+<h2>תמונות מתחלפות</h2>
+
+<div id="add-new">
+    <button type="button" class="btn" data-toggle="modal" data-target="#add-banner">הוסף תמונה</button>
+</div>
+
+
+<div id="cat-list" class="bnrs">
+    <div class="row cat-row headers">
+        <div class="col-md-2 title">
+            <span>כותרת</span>
+        </div>
+        <div class="col-md-2 title">
+            <span>טקסט</span>
+        </div>
+        <div class="col-md-3">
+            <span>תמונה מרכזית</span>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-2"></div>
+    </div>
+
+    @foreach (var banner in Model)
+    {
+        @Html.Partial("Partials/_HomeBannerRow", banner)
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="add-banner" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">הוספת קטגוריה ראשית</h4>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("DummayUpload", "Admin", new { }, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterAddBanner" }, new { enctype = "multipart/form-data", id = "ub" }))
+                {
+                    <div class="form-group">
+                        <label for="banner">בחר תמונה</label>
+                        <input type="file" name="FileUpload" id="FileUpload" accept="image/*" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="title">שם התמונה</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="שם התמונה" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="subTitle">תיאור התמונה</label>
+                        <input type="text" class="form-control" id="subTitle" name="subTitle" placeholder="תיאור התמונה" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary add-btn">הוסף</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="no-img" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">קובץ לא תקין</h4>
+            </div>
+            <div class="modal-body">
+                <p>לא ניתן להעלות קבצים שאינם תמונות. נסה שוב.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts
+{
+    <script src="~/Scripts/uploadfiles.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#add-new > button').click(function () {
+                $('#add-banner').modal('show');
+            });
+        });
+
+        $(document).on('change', '#FileUpload', function () {
+            $('#ext').val($(this).val().split('.')[1]);
+        });
+
+        $(document).on('click', '#cat-list.bnrs .remove', function () {
+            var row = $(this).parents('.cat-row');
+
+            $.ajax({
+                method: "POST",
+                url: '@Url.Action("RemoveBanner", "Admin")',
+                data: {
+                    bannerId: row.data('id')
+                },
+                success: function (data) {
+                    row.remove();
+                }
+            });
+        });
+
+        function ajaxFileUpload() {
+            $.ajaxFileUpload({
+                url: "@Url.Action("UploadAttachment", "Admin")",
+                secureuri: false,
+                fileElementId: 'FileUpload',
+                data: {},
+                success: function (data) {
+                    var obj = eval("data = " + data.all[3].innerText);
+                    $.ajax({
+                        method: "POST",
+                        url: '@Url.Action("AddBanner", "Admin")',
+                        data: {
+                            title: $('#title').val(),
+                            subTitle: $('#subTitle').val(),
+                            filename: obj.filename
+                        },
+                        success: function (data) {
+                            $('#cat-list.bnrs').append(data.html);
+                            $('#add-banner').modal('hide');
+                            $('#title').val('');
+                            $('#subTitle').val('');
+                            var $target = $('html,body');
+                            $target.animate({ scrollTop: $target.height() }, 1000);
+                        }
+                    });
+                }
+            });
+
+            return false;
+        }
+
+        function afterAddBanner(data) {
+            if (data.success) {
+                ajaxFileUpload();
+            }
+            else {
+                $('#no-img').modal('show');
+            }
+        }
+
+    </script>
+}

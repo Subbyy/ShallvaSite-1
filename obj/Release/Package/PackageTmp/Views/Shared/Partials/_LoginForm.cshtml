@@ -1,0 +1,13 @@
+﻿@using ShallvaMVC.Models
+
+@model LoginViewModel
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id="login" }))
+{
+    @Html.AntiForgeryToken();
+
+    @Html.TextBoxFor(m => m.LoginName, new { @class = "form-control", placeholder = "מס' לקוח" })
+    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "סיסמה" })
+    <button type="submit" class="btn btn-default">כניסה</button>
+    <a id="forgot-password" href="" class="small-text">שכחתי סיסמה</a>
+}

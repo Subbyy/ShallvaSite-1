@@ -1,0 +1,169 @@
+﻿@using ShallvaMVC.Models
+
+@model  List<ProductTable>
+
+@{
+    ViewBag.Title = "ניהול טבלאות";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    int mainCat = (int)Session["MainCategory"];
+    string mainCatName = Session["MainCategoryName"].ToString();
+    string currentCatName = Session["SubCatName"].ToString();
+
+    int? subCat = null;
+    if (Session["SubCat"] != null)
+    {
+        subCat = (int)Session["SubCat"];
+    }
+
+    int picId = (int)Session["PicId"];
+    string picTitle = Session["PicTitle"].ToString();
+}
+
+
+<div id="bc-cat">
+    <span class="crumb"><a href="@Url.Action("ManageMainCategories", "Admin")">@mainCatName</a></span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb"><a href="@Url.Action("ManageSubCategories", "Admin", new { mainCat = mainCat})">@currentCatName</a></span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb"><a href="@Url.Action("ManageProducts", "Admin", new { category = mainCat, catName = mainCatName })">@picTitle</a></span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb current-crumb">ניהול טבלאות</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">שורות</span>
+</div>
+
+
+<div id="current-title">
+    ניהול טבלאות
+</div>
+
+<div id="search-cont">
+    @using (Html.BeginForm("ManageProductTables", "Admin"))
+    {
+        <label for="term">חפש בטבלאות</label>
+        <input type="text" class="form-control" id="search" name="search" />
+
+        <input type="hidden" id="pic" name="pic" value="@picId" />
+
+        <button type="submit" class="btn">חפש</button>
+    }
+</div>
+
+<div id="add-new">
+    <button type="button" class="btn" data-toggle="modal" data-target="#add-new-table">הוסף טבלה</button>
+</div>
+
+
+
+<div id="cat-list">
+    <div class="row cat-row headers">
+        <div class="col-md-1">מזהה</div>
+        <div class="col-md-4">שם טבלה</div>
+        <div class="col-md-3">תמונה</div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+    </div>
+    @foreach (var table in Model)
+    {
+        @Html.Partial("Partials/_ProductTableRow", table)
+    }
+</div>
+
+<div id="cols-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">עמודות</h4>
+            </div>
+            <div class="modal-body">
+                <h5>הערה: כל שינוי עמודה בטבלה משנה את העמודות בכל המוצרים בטבלה. אסור שיהיו 2 עמודות עם אותו שם!</h5>
+
+                @using (Ajax.BeginForm("AddSubProductProperty", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterAddProp" }, new { }))
+                {
+                    <div class="form-group">
+                        <input type="text" name="propName" id="propName" placeholder="הזן שם עמודה" required />
+                    </div>
+                    <input type="hidden" id="subCatId" name="subCatId" />
+                    <button type="submit" class="btn btn-primary add-btn">הוסף</button>
+                }
+                <div id="cols"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="add-new-table" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">הוספת קטגוריה ראשית</h4>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("AddSubProductTable", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterAddTable" }))
+                {
+                    <div class="form-group">
+                        <label for="main-cat">שם טבלה</label>
+                        <input type="text" class="form-control" id="tableName" name="tableName" required placeholder="שם טבלה">
+                    </div>
+                    <input type="hidden" id="picId" name="picId" value="@picId" />
+                    if (subCat.HasValue)
+                    {
+                        <input type="hidden" id="subCatId" name="subCatId" value="@subCat.Value" />
+                    }
+                    <button type="submit" class="btn btn-primary add-btn">הוסף</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts
+{
+    <script src="~/Scripts/uploadfiles.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#add-new > button').click(function () {
+                $('#add-new-table').modal('show');
+            });
+        });
+
+        $(document).on('click', '.cols-link', function () {
+            var id = $(this).parents('.cat-row').data('id');
+
+            $.ajax({
+                method: "POST",
+                url: '@Url.Action("GetSubProductProperties", "Admin")',
+                data: {
+                    subCatId: id
+                },
+                success: function (data) {
+                    $('#subCatId').val(id);
+                    $('#cols').html(data.html);
+                    $('#cols-modal').modal('show');
+                }
+            });
+        });
+
+        function afterAddTable(data) {
+            $('#cat-list').append(data.html);
+            $('#.tableName').val('');
+            $('#add-new-table').modal('hide');
+            var $target = $('html,body');
+            $target.animate({ scrollTop: $target.height() }, 1000);
+        }
+
+        function afterAddProp(data) {
+            $('#cols').append(data.html);
+            $('#propName').val('');
+        }
+
+    </script>
+}

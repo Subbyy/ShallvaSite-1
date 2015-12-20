@@ -1,0 +1,29 @@
+﻿@model ShallvaMVC.Models.SiteUser
+
+@using (Ajax.BeginForm("AddUser", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterAddUser" }, new { id = "addUserForm"}))
+{
+    <div class="form-group">
+        @Html.LabelFor(x => x.Name, "שם")
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.UserName, "שם משתמש (מספר לקוח)")
+        @Html.TextBoxFor(x => x.UserName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Email, "אימייל")
+        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", type = "email" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Phone, "טלפון")
+        @Html.TextBoxFor(x => x.Phone, new { @class = "form-control" })
+    </div>
+    <div class="form-group password">
+        @Html.LabelFor(x => x.Password, "סיסמה")
+        @Html.TextBoxFor(x => x.Password, new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(x => x.Id)
+
+    <button type="submit" class="btn btn-primary add-btn">הוסף</button>
+}

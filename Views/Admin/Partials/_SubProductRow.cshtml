@@ -1,0 +1,24 @@
+﻿@using ShallvaMVC.Models
+
+@model SubProductRow
+
+<div class="row cat-row" data-id="@Model.Id">
+    <div class="col-md-1"><a href="#" class="link">פרטי השורה</a></div>
+    <div class="col-md-1">@Model.SKU</div>
+    <div class="col-md-2">@Model.ProductPictureTitle</div>
+    <div class="col-md-2">@Model.SubCategoryName</div>
+    <div class="col-md-2">@Model.SubProductName</div>
+    @*<div class="col-md-1">@Model.Description</div>*@
+    <div class="col-md-1 move-down">
+        <a href="#"><i class="glyphicon glyphicon-share-alt down"></i></a>
+    </div>
+    <div class="col-md-1 move-up">
+        <a href="#"><i class="glyphicon glyphicon-share-alt up"></i></a>
+    </div>
+    <div class="col-md-1 edit">
+        <a href="#"><i class="glyphicon glyphicon-pencil"></i></a>
+    </div>
+    <div class="col-md-1 remove">
+        <a href="#"><i class="glyphicon glyphicon-remove"></i></a>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿
+@model ShallvaMVC.Models.BennerGalleryItem
+
+<div class="row cat-row" data-id="@Model.Id" data-order="@Model.OrderId">
+    <div class="col-md-2 title">
+        <span>@Html.Raw(Model.Title)</span>
+    </div>
+    <div class="col-md-2 title">
+        <span>@Html.Raw(Model.SubTitle)</span>
+    </div>
+    <div class="col-md-3">
+        <img src="~/Content/Images/@Model.ImageName" alt="@Model.Title" />
+    </div>
+    <div class="col-md-1 move-down">
+        <a><i class="glyphicon glyphicon-share-alt down"></i></a>
+    </div>
+    <div class="col-md-1 move-up">
+        <a><i class="glyphicon glyphicon-share-alt up"></i></a>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1 edit">
+        <a><i class="glyphicon glyphicon-pencil"></i></a>
+    </div>
+    <div class="col-md-1 remove">
+        <a><i class="glyphicon glyphicon-remove"></i></a>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+﻿@using ShallvaMVC.Models
+
+@model ProductTable
+
+<div class="row cat-row" data-id="@Model.Id">
+    <div class="col-md-1">@Model.Id</div>
+    <div class="col-md-4">@Model.Title</div>
+    <div class="col-md-3">@Model.PictureName</div>
+    <div class="col-md-1"><a class="link cols-link">עמודות</a></div>
+    <div class="col-md-1">@Html.ActionLink("שורות", "ManageProductTableRows", "Admin", new { ptid = Model.Id, ptname = Model.Title }, new { @class = "link" })</div>
+    <div class="col-md-1 edit">
+        <a href="#"><i class="glyphicon glyphicon-pencil"></i></a>
+    </div>
+    <div class="col-md-1 remove">
+        <a href="#"><i class="glyphicon glyphicon-remove"></i></a>
+    </div>
+</div>

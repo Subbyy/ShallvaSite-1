@@ -1,0 +1,129 @@
+﻿@using ShallvaMVC.Models;
+
+@model Product
+
+@{
+    ViewBag.Title = Model.Name;
+    bool userConnected = Request.IsAuthenticated;
+    List<Product> similar = ViewData["SimilarProducts"] == null ? null : ViewData["SimilarProducts"] as List<Product>;
+}
+
+@section pageTitle
+{
+    <h1><span>@Model.Name</span></h1>
+
+}
+
+<img src="~/Content/Images/@Model.ImageName" alt="@Html.Raw(Model.Name)">
+
+@if (userConnected)
+{
+    using (Ajax.BeginForm(actionName: "AddProductsToCart", controllerName: "Cart", ajaxOptions: new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterAddToCart" }, htmlAttributes: new { id = "prod-table" }, routeValues: new RouteValueDictionary()))
+    {
+        @Html.HiddenFor(x => x.Id)
+
+        for (int i = 0; i < Model.OrderProducts.Count; i++)
+        {
+            @Html.HiddenFor(x => x.OrderProducts[i].Id)
+            var op = Model.OrderProducts[i];
+
+            <h3>@op.Name</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>שם מוצר</th>
+                        <th>מק"ט</th>
+                        @for (int j = 0; j < op.Properties.Count; j++)
+                        {
+                            int propid = op.Properties[j].Id;
+                            var prop = op.Properties[j].Name;
+                            <th class="prop" data-propId="@propid">@Html.Raw(prop)</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int j = 0; j < op.SubProducts.Count; j++)
+                    {
+                        @Html.HiddenFor(x => x.OrderProducts[i].SubProducts[j].Id)
+                        @Html.HiddenFor(x => x.OrderProducts[i].SubProducts[j].SKU)
+
+                        var sp = op.SubProducts[j];
+
+                        <tr data-spId="@sp.Id">
+                            <td>@Html.Raw(sp.Name)</td>
+                            <td>@sp.SKU</td>
+                            @for (int k = 0; k < sp.PropertiesValues.Count; k++)
+                            {
+                                int propid = sp.PropertiesValues[k].Id;
+                                <td class="prop" data-propId="@propid">
+                                    @Html.HiddenFor(x => x.OrderProducts[i].SubProducts[j].PropertiesValues[k].Id)
+                                    <input id="OrderProducts_@(i)__SubProducts_@(j)__PropertiesValues_@(k)__Name" 
+                                           name="OrderProducts[@(i)].SubProducts[@(j)].PropertiesValues[@(k)].Name" type="hidden" 
+                                           value="@Html.Raw(Model.OrderProducts[i].SubProducts[j].PropertiesValues[k].Name)">
+                                    @*@Html.HiddenFor(x => x.OrderProducts[i].SubProducts[j].PropertiesValues[k].Name)*@
+                                    @Html.TextBoxFor(x => x.OrderProducts[i].SubProducts[j].PropertiesValues[k].Count, new { placeholder = "יח'" })
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+}
+
+<div id="btns">
+    @if (userConnected)
+    {
+        <a href="#">עגלת קניות</a>
+        <button id="addToCart">הוסף לסל +</button>
+    }
+    @if (Model.NextProductId != null)
+    {
+        <a href="@Url.Action("Product", "Products", new { productId = Model.NextProductId.Value })">למוצר הבא</a>
+    }
+    @if (Model.PreviousProductId != null)
+    {
+        <a href="@Url.Action("Product", "Products", new { productId = Model.PreviousProductId.Value })">למוצר הקודם</a>
+    }
+    <a href="@Url.Action("ProductsList", "Products", new { categoryId = Model.CategoryId, subCategoryId = Model.SubCategoryId })">לקטגורית המוצר</a>
+    <a href="javascript:history.go(-1);">חזרה</a>
+</div>
+
+@if (similar != null && similar.Count > 0)
+{
+    <hr />
+    <div id="simillar">
+        <h3>מוצרים דומים</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="products-list">
+                    @for (int i = 0; i < similar.Count; i++)
+                    {
+                        Product p = similar[i];
+
+                        <li class="product" data-sc="@p.SubCategoryId">
+                            <div class="portfolio-item">
+                                <div class="portfolio-image">
+                                    <a href="@Url.Action("Product", "Products", new { productId = p.Id})">
+                                        <img src="~/Content/Images/small_images/@p.SmallImageName" alt="@Html.Raw(p.Name)">
+                                    </a>
+                                </div>
+                                <div class="portfolio-info-fade">
+                                    <ul>
+                                        <li class="read-more"><a href="@Url.Action("Product", "Products", new { productId = p.Id})" class="btn"><span>לפרטים נוספים</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/shallva.product.js"></script>
+}

@@ -1,0 +1,32 @@
+﻿@using ShallvaMVC.Areas.Mobile.Models;
+
+@model ProductItemModel
+
+@{ 
+    int index = (int)ViewData["mIndex"];//get from viewdata
+}
+
+<tr>
+    <td>
+        <span class="delProduct glyphicon glyphicon-remove"></span>
+    </td>
+    <td>
+        @Html.Raw(Model.Name)
+        <input type="hidden" id="Products_@(index)__Name" name="Products[@(index)].Name" value="@Model.Name"/>
+        <input type="hidden" id="Products_@(index)__Id" name="Products[@(index)].Id" value="@Model.Id" />
+    </td>
+    <td>
+        @Html.Raw(Model.SKU)
+        <input type="hidden" id="Products_@(index)__SKU" name="Products[@(index)].SKU" value="@Model.SKU" />
+    </td>
+    <td>
+        @Html.Raw(Model.Property)
+        <input type="hidden" id="Products_@(index)__Property" name="Products[@(index)].Property" value="@Model.Property" />
+    </td>
+    <td>
+        @Html.Raw(Model.Amount)
+        <input type="hidden" id="Products_@(index)__Amount" name="Products[@(index)].Amount" value="@Model.Amount" />
+    </td>
+
+</tr>
+

@@ -1,0 +1,141 @@
+﻿@using ShallvaMVC.Models
+
+@model  List<SubProductRow>
+
+@{
+    ViewBag.Title = "ניהול שורות";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    int mainCat = (int)Session["MainCategory"];
+    string mainCatName = Session["MainCategoryName"].ToString();
+    string currentCatName = Session["SubCatName"].ToString();
+
+    int? subCat = null;
+    if (Session["SubCat"] != null)
+    {
+        subCat = (int)Session["SubCat"];
+    }
+
+    int picId = (int)Session["PicId"];
+    string picTitle = Session["PicTitle"].ToString();
+
+    int subProdId = (int)Session["SubProdId"];
+    string subProdName = Session["SubProdName"].ToString();
+}
+
+
+<div id="bc-cat">
+    <span class="crumb"><a href="@Url.Action("ManageMainCategories", "Admin")">@mainCatName</a></span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb"><a href="@Url.Action("ManageSubCategories", "Admin", new { mainCat = mainCat})">@currentCatName</a></span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb"><a href="@Url.Action("ManageProducts", "Admin", new { category = mainCat, catName = mainCatName })">@picTitle</a></span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb">@subProdName</span>
+    <i class="glyphicon glyphicon-chevron-left"></i>
+    <span class="crumb current-crumb">ניהול שורות</span>
+</div>
+
+
+<div id="current-title">
+    ניהול שורות
+</div>
+
+<div id="search-cont">
+    @using (Html.BeginForm("ManageProductTableRows", "Admin"))
+    {
+        <label for="term">חיפוש חופשי</label>
+        <input type="text" class="form-control" id="search" name="search" placeholder="חפש שורות" />
+
+        <input type="hidden" id="ptid" name="ptid" value="@subProdId" />
+
+        <button type="submit" class="btn">חפש שורות</button>
+    }
+
+    @*@using (Html.BeginForm("ManageProductTableRows", "Admin"))
+    {
+        <label for="term">חיפוש לפי תמונה או טבלה</label>
+        
+        <select>
+            <option>בחר תמונה</option>
+        </select>
+
+        <select>
+            <option>בחר טבלה</option>
+        </select>
+
+        <button type="submit" class="btn">הצג כל השורות</button>
+    }*@
+</div>
+
+<div id="add-new">
+    <button type="button" class="btn" data-toggle="modal" data-target="#add-new-row">הוסף שורה</button>
+</div>
+
+
+<div id="cat-list">
+    <div class="row cat-row headers">
+        <div class="col-md-1"></div>
+        <div class="col-md-1">מק"ט</div>
+        <div class="col-md-2">תמונה</div>
+        <div class="col-md-2">שם שורה</div>
+        <div class="col-md-1">טבלה</div>
+        @*<div class="col-md-1">תאור</div>*@
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+    </div>
+    @foreach (var row in Model)
+    {
+        @Html.Partial("Partials/_SubProductRow", row)
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="add-new-row" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">הוספת קטגוריה ראשית</h4>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("AddProductTableRow", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterAddRow" }))
+                {
+                    <div class="form-group">
+                        <label for="main-cat">שם מוצר חדש</label>
+                        <input type="text" class="form-control" id="sbName" name="sbName" required">
+                    </div>
+                    <div class="form-group">
+                        <label for="main-cat">מק"ט מוצר חדש</label>
+                        <input type="text" class="form-control" id="sku" name="sku" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary add-btn">הוסף מוצר חדש</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script src="~/Scripts/uploadfiles.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#add-new > button').click(function () {
+                $('#add-new-table').modal('show');
+            });
+        });
+
+        function afterAddRow(data) {
+            $('#cat-list').append(data.html);
+            $('#add-new-row').modal('hide');
+            $('#sku,#sbName').val('');
+            var $target = $('html,body');
+            $target.animate({ scrollTop: $target.height() }, 1000);
+        }
+
+    </script>
+}

@@ -1,0 +1,106 @@
+﻿body {
+    padding-top: 70px;
+}
+
+/* Navbar */
+
+.navbar {
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.navbar-default .navbar-toggle {
+    float: left;
+    border-color: #fff;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #000;
+}
+
+.nav-shabat-span {
+    float: right;
+}
+
+.navbar-brand {
+    float: right;
+    padding: 15px;
+}
+.navbar-brand > img {
+    height: 250%;
+    margin-top: -20px;
+    margin-right: -15px;
+}
+
+.shabat-icon {
+    height: 35px;
+    vertical-align: text-top;
+}
+
+.navbar-nav li.divider {
+    border: 1px solid rgba(227,227,227,0.5);
+}
+
+.navbar-nav .navbar-form {
+    height: 50px;
+    border-color: transparent;
+    padding: 0 30px;
+}
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+    background-color: #FFF;
+}
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+    background-color: #FFF;
+}
+
+.navbar-collapse {
+    overflow: hidden;
+}
+.search-box {
+    text-align: right;
+} 
+/*          -- End Navbar */
+
+/* Header */
+header.container {
+    margin: 15px 15px 30px 15px;
+}
+/*          -- End Header */
+
+/* Main-Content */
+.main-block {
+    text-align: right;
+    height: 150px;
+    color: #fff;
+    background-color: chocolate;
+}
+
+
+.main-block .model {
+    height: 150px;
+    width: 100%;
+    position: relative;
+    left: -15px;
+}
+.main-block .col-xs-5 h3 {
+    padding-right: 15px;
+    font-size: 16px;
+}
+.main-block .col-xs-5 h2 {
+    font-size: 26px;
+}
+
+.main-block:nth-child(odd) .col-xs-7 {
+    float: right;
+}
+.main-block:nth-child(odd) .col-xs-7 .model {
+    left: 15px;
+}
+/*          -- End Main-Content */
+
+/* Footer */
+footer.container {
+    margin: 15px;
+    text-align: right;
+}
+/*          -- End Footer */

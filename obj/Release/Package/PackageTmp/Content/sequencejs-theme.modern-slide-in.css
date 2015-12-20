@@ -1,0 +1,578 @@
+/*
+Theme created for use with Sequence.js (http://www.sequencejs.com/)
+
+Theme:   Sliding Horizontal Parallax (Responsive)
+Version:   0.2.2 Beta
+Theme Author:   Ian Lunn @IanLunn
+Author URL:   http://www.ianlunn.co.uk/
+Theme URL:   http://www.sequencejs.com/themes/sliding-horizontal-parallax/
+
+This is a FREE theme and is dual licensed under the following: 
+http://www.opensource.org/licenses/mit-license.php | http://www.gnu.org/licenses/gpl.html
+
+Sequence.js and its dependencies are (c) Ian Lunn Design 2012 unless otherwise stated.
+Aside from these comments, you may modify and distribute this file as you please. Have fun!
+ */
+
+#header-container{
+position:relative;
+z-index:10;
+width:1024px;
+
+margin: 0 auto;
+}
+
+#header {
+background: url(../images/bg1.png) repeat;
+
+	height: 450px;
+	margin: 0 auto;
+	position: relative;
+	overflow: hidden;
+	max-width: 1280px;
+z-index:0;
+	
+}
+
+#main, #aside{
+	
+}
+
+
+
+.next,.prev {
+	color: #fff;
+	cursor: pointer;
+	display: none;
+	font-weight: bold;
+	padding: 10px 15px;
+	position: absolute;
+	top: 50%;
+	z-index: 1000;
+	height: 75px;
+	margin-top: -47.5px;
+}
+
+.pause {
+	bottom: 0;
+	cursor: pointer;
+	position: absolute;
+	z-index: 1000;
+}
+
+.paused {
+	opacity: 0.3;
+}
+
+.prev {
+	left: 3%;
+}
+
+.next {
+	right: 3%;
+}
+
+.prev img, .next img{
+	height: 100%;
+	width: auto;
+}
+
+#sequence-preloader{
+	display:none;
+}
+
+#nav {
+	bottom: -20%;
+	display: none;
+	right: 6%;
+	position: absolute;
+
+	-webkit-transition-duration: .5s;
+	-moz-transition-duration: .5s;
+	-o-transition-duration: .5s;
+	-ms-transition-duration: .5s;
+	transition-duration: .5s;
+}
+
+#nav li {
+	display: inline-block;
+	height: 140px;
+}
+
+#nav li img {
+	cursor: pointer;
+	opacity: 0.5;
+
+	-webkit-transition-duration: 1s;
+	-moz-transition-duration: 1s;
+	-o-transition-duration: 1s;
+	-ms-transition-duration: 1s;
+	transition-duration: 1s;
+}
+
+#nav li img.active {
+	opacity: 1;
+}
+
+@media only screen and (min-width : 1224px) {
+	/*only display the hover effect on desktops/laptops*/
+	#nav li img:hover {
+		opacity: 1;
+	
+		-webkit-transition-duration: 1s;
+		-moz-transition-duration: 1s;
+		-o-transition-duration: 1s;
+		-ms-transition-duration: 1s;
+		transition-duration: 1s;
+	}
+
+}
+
+#sequence li{
+	height: 100%;
+	position: absolute;
+	top: -50%;
+	width: 100%;
+}
+
+#sequence li * {
+	position: absolute;
+}
+
+#sequence li img{
+	height: 96%;
+}
+
+#sequence {
+	
+	display: block;
+	height: 100%;
+	margin: 0;
+	position: absolute;
+	max-width: 1280px;
+	width: 100%;
+	
+	/*backface-visibility prevents graphical glitches when frames are animating*/
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-o-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+#sequence h2 {
+	color: #fff;	
+	text-transform: uppercase;
+font-size:44px;
+}
+
+#sequence h3 {
+	color: #fff;
+font-family:"pt sans";
+top:94%;
+font-size:27px;
+}
+
+#sequence p {
+	color: #fff;
+font-size:17px;
+font-family:"pt sans";
+top:98%;
+}
+
+.next,.prev {
+	position: absolute;
+	opacity: 0.4;
+
+	-webkit-transition-duration: 1s;
+	-moz-transition-duration: 1s;
+	-o-transition-duration: 1s;
+	-ms-transition-duration: 1s;
+	transition-duration: 1s;
+}
+
+.next:hover,.prev:hover {
+	opacity: 1;
+
+	-webkit-transition-duration: 1s;
+	-moz-transition-duration: 1s;
+	-o-transition-duration: 1s;
+	-ms-transition-duration: 1s;
+	transition-duration: 1s;
+}
+
+.title {
+	bottom:40%;
+	left: 60%;
+	width: 35%;
+	opacity: 0;
+	bottom: 1%;
+	z-index: 50;
+}
+
+.title.animate-in {
+	left: 50%;
+	opacity: 1;
+	bottom:0;
+	-webkit-transition-duration: .5s;
+	-moz-transition-duration: .5s;
+	-o-transition-duration: .5s;
+	-ms-transition-duration: .5s;
+	transition-duration: .5s;
+}
+
+.title.animate-out {
+	left: 50%;
+	bottom:40%;
+	opacity: 0;
+
+	-webkit-transition-duration: .5s;
+	-moz-transition-duration: .5s;
+	-o-transition-duration: .5s;
+	-ms-transition-duration: .5s;
+	transition-duration: .5s;
+}
+
+.subtitle {
+	
+	left: 50%;
+	width: 35%;
+	opacity: 0;
+	top: 101%;
+}
+
+.subtitle.animate-in {
+	left: 50%;
+	opacity: 1;
+
+	-webkit-transition-duration: .5s;
+	-moz-transition-duration: .5s;
+	-o-transition-duration: .5s;
+	-ms-transition-duration: .5s;
+	transition-duration: .5s;
+}
+
+.subtitle.animate-out {
+	left:50%;
+	opacity: 0;
+
+	-webkit-transition-duration: .5s;
+	-moz-transition-duration: .5s;
+	-o-transition-duration: .5s;
+	-ms-transition-duration: .5s;
+	transition-duration: .5s;
+}
+
+.model {
+	left: 3%;
+	bottom: -50%;
+	opacity: 0;
+	position: relative;
+	height: auto !important;
+	max-height: 568px !important;
+	width: 50%;
+	min-width: 325px; /*prevents the model from shrinking when the browser is resized*/
+	max-width: 400px;
+}
+
+.model.animate-in {
+	left: 10%;
+	opacity: 1;
+
+	-webkit-transition-duration: 1s;
+	-moz-transition-duration: 1s;
+	-o-transition-duration: 1s;
+	-ms-transition-duration: 1s;
+	transition-duration: 1s;
+}
+
+.model.animate-out {
+	left: 3%;
+	opacity: 0;
+
+	-webkit-transition-duration: .5s;
+	-moz-transition-duration: .5s;
+	-o-transition-duration: .5s;
+	-ms-transition-duration: .5s;
+	transition-duration: .5s;
+}
+
+@media only screen and (min-width : 992px) {
+	.title{
+		width: 30%;
+	}
+}
+
+@media only screen and (max-width : 838px) {
+	#header{
+		height: 450px;
+	}
+	
+	.model{
+		max-height: 530px !important;
+		width: 60%;
+left:5%;
+	}
+
+.model.animate-in{
+		
+left:5%;
+	}
+}
+
+
+
+
+
+
+@media only screen and (max-width : 767px) {
+	#header{
+		height: 450px;
+	}
+
+#nav{
+visibility:hidden;
+	}	
+
+
+#sequence h2 {
+	
+font-size:34px;
+}
+	
+.title {
+		bottom:-10%;
+	left: 20%;
+	width: 60%;
+	opacity: 0;
+	
+	z-index: 50;
+}
+	
+.title.animate-in{
+	bottom:-50%;
+	left: 20%;
+	
+}
+.title.animate-out{
+		bottom:-10%;
+	left: 20%;
+	
+}
+
+	.subtitle{
+		visibility: hidden;
+	}
+	
+	.next,.prev {
+		height: 60px;
+		margin-top: -40px;
+	}
+	
+	.model{
+		max-height:420px;
+		width: auto;left:10%;
+	}
+
+.model.animate-in{
+		
+left:30%;
+	}
+}
+
+@media only screen
+and (max-width : 568px) {
+#header{
+		height: 300px;
+	}
+	.model{max-height: 280px !important;
+		width: auto;
+		
+		min-width: 40%; /*prevents the model from shrinking when the browser is resized*/
+				
+	}
+	
+	.model.animate-in {
+		left: 30%;
+		
+	}
+	
+	.model.animate-out {
+		left: 30%;
+		
+	}
+	
+	
+	
+	#nav{
+		bottom: 40px;
+	}
+	
+	#nav li img{
+		height: 250px;
+	}
+}
+
+@media only screen
+and (max-width : 480px) {
+	#header{
+		height: 250px;
+	}
+
+#sequence h2 {
+	
+font-size:27px;
+}
+	
+.model{max-height: 230px !important;
+		width: auto;
+		
+		min-width: 40%; /*prevents the model from shrinking when the browser is resized*/
+				
+	}
+
+
+
+}
+
+@media only screen
+and (max-width : 468px) {
+	#header{
+		height: 250px;
+	}
+	
+	#nav{
+		opacity: 0;
+		visibility: hidden;
+	}
+
+.model{max-height: 230px !important;
+		width: auto;
+		
+		min-width: 40%; /*prevents the model from shrinking when the browser is resized*/
+			width: 40%;	
+	}
+
+
+}
+
+@media only screen
+and (max-width : 418px) {
+	#header{
+		height: 250px;
+	}
+}
+
+@media only screen
+and (max-width : 368px) {
+	#header{
+		height: 200px;
+	}
+	.title{
+		font-size: 2.2em;
+	}
+.model{max-height: 180px !important;
+		width: auto;
+		
+		min-width: 40%; /*prevents the model from shrinking when the browser is resized*/
+			width: 40%;	
+	}
+
+
+
+
+}
+
+@media 	only screen
+		and (max-width : 320px)
+		and (orientation : portrait) { /*iphone portrait*/
+	#header{
+		height: 200px;
+width:100%;
+	}
+	
+	.model{
+		width:auto;
+	}
+	
+	.model.animate-in{
+		
+	}
+	
+	.model.animate-out{
+		
+	}
+}
+
+@media 	only screen
+		and (min-width : 321px)
+		and (max-width : 480px)
+		and (orientation : landscape) {
+		#header{
+			height: 200px;
+		}
+		
+		.model{
+			
+		}
+		
+		.model.animate-in{
+			
+			margin-left: 0;
+		}
+		
+		.model.animate-out{
+			
+			margin-left: 0;
+		}
+		
+		
+}
+
+
+@media 	only screen
+		and (max-width : 320px)
+		and (orientation : portrait) { /*iphone portrait*/
+	#header{
+		height: 200px;
+width:100%;
+	}
+	
+	.model{
+		width:auto;
+	}
+	
+	.model.animate-in{
+		
+	}
+	
+	.model.animate-out{
+		
+	}
+}
+
+@media 	only screen
+		and (min-width : 150px)
+		and (max-width : 319px)
+		and (orientation : landscape) {
+		#header{
+			height: 150px;
+		}
+		
+		.model{
+			width:auto;
+max-height:90px;
+		}
+		
+		.model.animate-in{
+			
+			margin-left: 0;
+		}
+		
+		.model.animate-out{
+			
+			margin-left: 0;
+		}
+		
+		
+}

@@ -1,0 +1,184 @@
+﻿@using ShallvaMVC.Models
+
+@{
+    ViewBag.Title = "ניהול משתמשים";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model List<SiteUser>
+
+
+
+<div id="current-title">
+    ניהול משתמשים
+</div>
+
+<div id="search-cont">
+    @using (Html.BeginForm())
+    {
+        <label for="term">סנן משתמשים לפי:</label>
+        <input type="text" class="form-control" id="search" name="search" />
+        <button type="reset" class="btn" onclick="showAll()">נקה</button>
+    }
+</div>
+
+<div id="add-new">
+    <button type="button" class="btn" data-toggle="modal" data-target="#add-new-user">הוסף משתמש</button>
+</div>
+
+
+
+<div id="cat-list">
+    <div class="row cat-row headers">
+        <div class="col-md-2">שם</div>
+        <div class="col-md-2">אימייל</div>
+        <div class="col-md-2">טלפון</div>
+        <div class="col-md-2">מספר לקוח</div>
+        <div class="col-md-2"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+    </div>
+    @foreach (var user in Model)
+    {
+        @Html.Partial("Partials/_UserRow", user)
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="add-new-user" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">הוסף משתמש חדש</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("Partials/_AddUserForm", new SiteUser())
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="change-password" class="hide">
+    @using (Ajax.BeginForm("ChangeUserPassword", "Admin", new AjaxOptions() { HttpMethod = "POST", OnSuccess = "afterUpdateUserPassword" }))
+    {
+        <input type="text" id="password" name="password" required placeholder="הזן סיסמה" />
+        <input type="hidden" name="userId" id="userId" />
+        <button type="submit" class="btn btn-primary add-btn">עדכן</button>
+        <button type="button" class="btn btn-primary add-btn" onclick="$('.popover').remove();">סגור</button>
+    }
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/uploadfiles.js"></script>
+    <script type="text/javascript">
+
+        var update = false;
+
+        $(document).ready(function () {
+            $('#add-new > button').click(function () {
+                clearUserForm();
+                $('.password').removeClass('hide');
+                update = false;
+                var action = '@Url.Action("AddUser", "Admin")';
+                $('#addUserForm').prop('action', action)
+                $('#add-new-user').modal('show');
+            });
+
+            $('#search').keyup(function () {
+                var value = $(this).val();
+                $('#cat-list > .cat-row:not(.headers)').hide();
+                $('#cat-list > .cat-row:not(.headers)').each(function () {
+                    if ($(this).find('.name').text().indexOf(value) >= 0 ||
+                        $(this).find('.email').text().indexOf(value) >= 0 ||
+                        $(this).find('.phone').text().indexOf(value) >= 0 ||
+                        $(this).find('.username').text().indexOf(value) >= 0) {
+                        $(this).show();
+                    }
+                });
+            });
+        });
+
+        $(document).on('click', '.reset-pass', function () {
+            $('.popover').remove();
+            $('#userId').val($(this).parents('.row').data('id'));
+            $(this).popover({
+                content: $('#change-password').html(),
+                title: 'עדכן סיסמה',
+                html: true,
+                trigger: 'manual'
+            });
+            $(this).popover('toggle');
+        });
+
+        $(document).on('click', '.edit-user', function () {
+            var row = $(this).parents('.cat-row');
+            var action = '@Url.Action("UpdateUser", "Admin")';
+            $('#addUserForm').prop('action', action)
+
+            $('#Name').val(row.find('.name').html());
+            $('#UserName').val(row.find('.username').html());
+            $('#Email').val(row.find('.email').html());
+            $('#Phone').val(row.find('.phone').html());
+            $('#Id').val(row.data('id'));
+            $('#Password').val('');
+            $('.password').addClass('hide');
+            $('#add-new-user').modal('show');
+
+            update = true;
+        });
+
+        $(document).on('click', '.remove-user', function () {
+            var user = $(this).parents('.cat-row');
+
+            $.ajax({
+                method: "POST",
+                url: '@Url.Action("RemoveUser", "Admin")',
+                data: {
+                    userId: $(this).parents('.cat-row').data('id')
+                },
+                success: function (data) {
+                    user.remove();
+                }
+            });
+        });
+
+        function showAll() {
+            $('#cat-list > .cat-row:not(.headers)').show();
+        }
+
+        function clearUserForm() {
+            $('#Name').val('');
+            $('#UserName').val('');
+            $('#Email').val('');
+            $('#Phone').val('');
+            $('#Id').val('');
+            $('#Password').val('');
+        }
+
+        function afterUpdateUserPassword(data) {
+            $('.popover').remove();
+        }
+
+        function afterAddUser(data) {
+            if (update) {
+                var row = $('.cat-row[data-id=' + $('#Id').val() + ']');
+                row.find('.name').html($('#Name').val());
+                row.find('.username').html($('#UserName').val());
+                row.find('.email').html($('#Email').val());
+                row.find('.phone').html(($('#Phone').val()));
+            }
+            else {
+                $('#cat-list').append(data.html);
+                var $target = $('html,body');
+                $target.animate({ scrollTop: $target.height() }, 1000);
+            }
+
+            clearUserForm();
+            $('#add-new-user').modal('hide');
+        }
+
+    </script>
+}

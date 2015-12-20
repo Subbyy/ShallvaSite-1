@@ -1,0 +1,59 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שלווה - מערכת ניהול</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet">
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/admin.css" rel="stylesheet" />
+    <link rel="icon" href="~/Content/img/favicon.png">
+    @RenderSection("head", required: false)
+</head>
+<body>
+    <header>
+        <h1><a href="/">ברוך הבא לממשק ניהול של האתר</a></h1>
+    </header>
+
+    <nav id="nav" class="navbar navbar-default">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li>
+                    @Html.ActionLink("דף ראשי", "Index", "Admin")
+                    <ul>
+                        <li>@Html.ActionLink("תמונות מתחלפות", "HomePictures", "Admin")</li>
+                        @*<li><a href="#">קטגוריות</a></li>*@
+                        <li><a href="#">לקוחותינו</a></li>
+                    </ul>
+                </li>
+                <li>
+                    @Html.ActionLink("מוצרים", "ManageMainCategories", "Admin")
+                    <ul>
+                        <li><a href="#">חיפוש מוצרים</a></li>
+                    </ul>
+                </li>
+                <li>@Html.ActionLink("אודות", "About", "Admin")</li>
+                <li>
+                    @Html.ActionLink("משתמשים", "ManageUsers", "Admin")
+                </li>
+                <li><a href="#">הזמנות</a></li>
+                <li><a href="#">Meta</a></li>
+                <li>@Html.ActionLink("חזרה לאתר", "Index", "Home")</li>
+            </ul>
+        </div>
+    </nav>
+
+    @RenderSection("header", false)
+    <div id="main-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

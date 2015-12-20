@@ -1,0 +1,254 @@
+﻿@using ShallvaMVC.Models;
+
+@model Product
+
+@{
+    ViewBag.Title = Model.Name;
+    bool userConnected = Request.IsAuthenticated;
+    List<Product> similar = ViewData["SimilarProducts"] == null ? null : ViewData["SimilarProducts"] as List<Product>;
+    bool firstTime;
+    var prodPropList = new List<SelectListItem>();
+    var prodNameList = new List<SelectListItem>();
+    prodNameList.Add(new SelectListItem
+    {
+        Selected = true,
+        Text = "",
+        Value = "-1"
+    });
+    prodPropList.Add(new SelectListItem
+    {
+        Selected = true,
+        Text = "",
+        Value = "-1"
+    });
+}
+
+@section pageTitle
+{
+    <div class="row">
+        <div class="col-xs-12 title">
+            <h3>
+                <span>@Html.Raw(Model.Name)</span>
+            </h3>
+        </div>
+    </div>
+    <img src="~/Content/Images/@Model.ImageName" alt="@Html.Raw(Model.Name)">
+}
+
+
+
+@if (userConnected)
+{
+    for (int i = 0; i < Model.OrderProducts.Count; i++)
+    {
+        var op = Model.OrderProducts[i];
+        firstTime = true;
+        foreach (var prod in op.SubProducts)
+        {
+            prodNameList.Add(new SelectListItem
+            {
+                Text = HttpUtility.HtmlDecode(prod.Name),
+                Value = prod.SKU + '_' + prod.Id
+            });
+
+            if (prod.PropertiesValues != null && firstTime)
+            {
+                foreach (var prop in prod.PropertiesValues)
+                {
+                    prodPropList.Add(new SelectListItem
+                    {
+                        Text = HttpUtility.HtmlDecode(prop.Name),
+                        Value = prop.Id.ToString()
+                    });
+                }
+                firstTime = false;
+            }
+        }
+
+        <h3>@Html.Raw(op.Name)</h3>
+        <div class="row addToCartErrMsg" style="display: none;"><span>יש להכניס מוצרים לטבלה</span></div>
+        <div class="row addProduct">
+            <div class="col-xs-3 prodName">
+                @Html.DropDownList("Name", prodNameList)
+            </div>
+            <div class="col-xs-3 prodProp">
+                @Html.DropDownList("Prop", prodPropList)
+            </div>
+            <div class="col-xs-3 prodAmount">
+                @Html.TextBox("Amount", "", new { placeholder = "יח'", max = "999", min = "1", @type = "number" })
+            </div>
+            <div class="col-xs-3 prodAddBtn">
+                <div class="addToCartBtn" title="הוסף מוצר לרשימה">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row productsAction">
+            @using (Ajax.BeginForm("AddToCart", "Products", new AjaxOptions { }, new { id = "addProductsForm" }))
+            {
+                <div class="table-responsive" style="display: none;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>שם מוצר</th>
+                                <th>מק"ט</th>
+                                <th>מאפיין</th>
+                                <th>כמות</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-table"></tbody>
+                    </table>
+                </div>
+                <input type="submit" class="btn-orange-small" name="submit" value="הוסף לסל +" />
+            }
+        </div>
+
+        prodNameList.RemoveAll(x => x.Text != "" && x.Value != "-1");
+        prodPropList.RemoveAll(x => x.Text != "" && x.Value != "-1");
+    }
+
+    if (Model.OrderProducts.Count == 0)
+    {
+        <h3>@Html.Raw(Model.Name)</h3>
+    }
+}
+
+<div id="btns" class="row">
+    @if (Model.NextProductId != null)
+    {
+        <div class="prod-btn">
+            <a href="@Url.Action("Product", "Products", new { productId = Model.NextProductId.Value, title = "למוצר הבא" })">
+                <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                <br />
+                <span>למוצר הבא</span>
+            </a>
+        </div>
+    }
+    @if (Model.PreviousProductId != null)
+    {
+        <div class="prod-btn">
+            <a href="@Url.Action("Product", "Products", new { productId = Model.PreviousProductId.Value, title = "למוצר הקודם" })">
+                <span class="glyphicon glyphicon-circle-arrow-left"></span>
+                <br />
+                <span>למוצר הקודם</span>
+            </a>
+        </div>
+    }
+    <div class="prod-btn">
+        <a href="@Url.Action("ProductsList", "Products", new { categoryId = Model.CategoryId, subCategoryId = Model.SubCategoryId, title = "לקטגורית המוצר" })">
+            <span class="glyphicon glyphicon-circle-arrow-up"></span>
+            <br />
+            <span>לקטגורית המוצר</span>
+        </a>
+    </div>
+    <div class="prod-btn">
+        <a href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            <br />
+            <span>חזרה</span>
+        </a>
+    </div>
+</div>
+
+@if (similar != null && similar.Count > 0)
+{
+    <div id="simillar">
+        <div class="row">
+            <div class="col-xs-12 title">
+                <h3>מוצרים דומים</h3>
+            </div>
+            <div class="col-xs-12">
+                <div id="products-list" class="row">
+                    @for (int i = 0; i < similar.Count; i++)
+                    {
+                        Product p = similar[i];
+
+                        <div class="product col-xs-6" data-sc="@p.SubCategoryId">
+                            <a href="@Url.Action("Product", "Products", new { productId = p.Id})">
+                                <img src="~/Content/Images/small_images/@p.SmallImageName" alt="@Html.Raw(p.Name)">
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $('#Name').on('change', function () {
+            $('#SKU option:selected').val($(this).val());
+        });
+        $(document).on('click', '.addToCartBtn', function () {
+            var elem = $(this);
+            var parent = elem.parents('.addProduct');
+            var skid = parent.find('#Name option:selected').val();
+            var name = parent.find('#Name option:selected').text();
+            var sku = skid.split("_")[0];
+            var prop = parent.find('#Prop option:selected').text();
+            var amount = parent.find('#Amount').val();
+            var id = skid.split("_")[1];
+
+            elem.parent().siblings().find('span').remove();
+            if (name != "" && prop != "" && amount != "") {
+                $.ajax({
+                    method: 'POST',
+                    url: '@Url.Action("InsertProductToTable", "Products", new { area="Mobile"})',
+                    data: { name: name, sku: sku, prop: prop, amount: amount, id: id, index: parent.siblings('.productsAction').find('#product-table').find('tr').length },
+                    success: function (data) {
+                        if (data.item) {
+                            if (!parent.next('.productsAction').find('.table-responsive').is(":visible")) {
+                                parent.next('.productsAction').find('.table-responsive').show();
+                            }
+                            parent.next('.productsAction').find('#product-table').prepend(data.item);
+                        }
+
+                        parent.prev().hide();
+                        parent.find('#Name').prop('selectedIndex', 0);
+                        parent.find('#Prop').prop('selectedIndex', 0);
+                        parent.find('#Amount').val("");
+                        elem = null;
+                    }
+                });
+            }
+            else {
+                var errSpan = '<span style="color:rgba(249, 5, 5, 0.72);position: absolute;top: -20px;">שדה חובה</span>';
+
+                if (name == "" && !$(this).parent().siblings('.prodName').find('span').length) {
+                    $(this).parent().siblings('.prodName').prepend(errSpan);
+                }
+                if (prop == "" && !$(this).parent().siblings('.prodProp').find('span').length) {
+                    $(this).parent().siblings('.prodProp').prepend(errSpan);
+                }
+                if (amount == "" && !$(this).parent().siblings('.prodAmount').find('span').length) {
+                    $(this).parent().siblings('.prodAmount').prepend(errSpan);
+                }
+                errSpan = null;
+            }
+
+            name = null; sku = null; prop = null; amount = null;
+        });
+
+        $(document).on('click', '.delProduct', function () {
+            var productsTable = $(this).parents('#product-table');
+            var table = $(this).parents('.table-responsive');
+            $(this).parents('tr').remove();
+            // if after delete there are no other rows - hide table
+            if (!productsTable.find('tr').length) {
+                table.hide();
+            }
+            productsTable = null; table = null;
+        });
+
+        $(document).on('click', '.btn-orange-small', function (e) {
+            $(this).parents('.productsAction').prev().prev().hide();
+            if (!$(this).prev().is(':visible')) {
+                e.preventDefault();
+                $(this).parents('.productsAction').prev().prev().show();
+            }
+        });
+    </script>
+}

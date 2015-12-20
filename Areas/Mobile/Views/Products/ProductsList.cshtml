@@ -1,0 +1,96 @@
+﻿@using ShallvaMVC.Models;
+
+@{
+    ViewBag.Title = "מוצרים";
+    List<CategoryListItem> tags = ViewData["CategoriesTags"] as List<CategoryListItem>;
+    var nextCategory = ViewData["NextCategory"] == null ? null : ViewData["NextCategory"] as CategoryListItem;
+    int catCount = Model.Count;
+    int category = (int)ViewData["Category"];
+    int subCategory = (int)ViewData["SubCategory"];
+}
+
+@model List<Product>
+
+<div id="products">
+    @section pageTitle {
+        <div class="row">
+            <div class="col-xs-12 title">
+                <h3>
+                    <span>מוצרים</span>
+                    @if (category != -1)
+                    {
+                        <span>>> @Html.Raw(Model.First(x => x.CategoryId == category).CategoryName)</span>
+                        bool flag = Model.FirstOrDefault(x => x.SubCategoryId == subCategory) != null;
+                        if (subCategory != -1 && flag)
+                        {
+                            <span>>> @Html.Raw(Model.First(x => x.SubCategoryId == subCategory).SubCategoryName)</span>
+                        }
+                    }
+                </h3>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul id="products-list">
+                @Html.Partial("Partials/_ProdcutsItems", Model)
+            </ul>
+        </div>
+    </div>
+    @*<div class="row">
+            <div class="col-md-12">
+                <h3>תגיות</h3>
+                <ul id="cat-tags">
+                    <li class="tag"><a href="@Url.Action("ProductsList", "Products")">כל המוצרים</a></li>
+                    @foreach (var t in tags)
+                {
+                        <li class="tag"><a href="@Url.Action("ProductsList", "Products", new { categoryId = t.Id})">@Html.Raw(t.Name)</a></li>
+                    }
+                </ul>
+            </div>
+        </div>*@
+</div>
+@section scripts {
+    @if (subCategory != -1)
+    {
+        <script type="text/javascript">
+            $(window).load(function () {
+                var el = '#products-list .product[data-sc=@subCategory]';
+                var offset = $(el).first().offset().top - $('#products').offset().top - 70;
+                $('html, body').animate({
+                    scrollTop: offset
+                }, 1000);
+                el = null; offset = null;
+            });
+        </script>
+    }
+
+    <script type="text/javascript">
+        var isPaging = true;
+        var pageNumber = 1;
+
+        $(document).ready(function () {
+            $(window).scroll(function () {
+                if (isPaging) {
+                    if ($(window).scrollTop() + $(window).height() > $(document).height() - 350 - $('#cat-tags').height()) {
+                        $.ajax({
+                            method: "POST",
+                            url: '@Url.Action("GetNextProducts", "Products")',
+                            //contentType: false,
+                            //dataType: "json",
+                            data: {
+                                categoryId: @(category > 0 ? category.ToString() : "null"),
+                                page: ++pageNumber
+                            },
+                            success: function (data) {
+                                $('#products-list').append(data.html);
+                                isPaging = !data.lastPage;
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+}

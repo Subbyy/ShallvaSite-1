@@ -1,0 +1,876 @@
+/* ########################################################################################## */
+/*                                 Shallva MVC Site - Desktop                                 */
+/* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv */
+
+/* Set padding to keep content from hitting the edges */
+
+body {
+    direction: rtl;
+}
+
+    body.modal-open {
+        margin-right: auto;
+    }
+
+body, #top-header {
+    width: 1024px;
+    margin: 0 auto;
+}
+
+footer {
+    text-align: center;
+    background-color: #171615;
+    color: #FFF;
+    position: fixed;
+    width: 1024px;
+    bottom: 0;
+    font-size: 13px;
+}
+
+textarea {
+    resize: none;
+}
+
+#footer {
+    position: relative;
+    line-height: 40px;
+}
+
+#to-top {
+    color: #171615;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+}
+
+    #to-top:hover {
+        text-decoration: none;
+    }
+
+#main-content {
+    position: relative;
+    padding: 215px 0 45px;
+}
+
+a {
+    color: #f26b44;
+}
+
+    a:hover {
+        color: #ff9f00;
+        text-decoration: none;
+    }
+
+.ico {
+    background-color: #f26b44;
+    color: #FFF;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 50%;
+}
+
+    .ico:hover {
+        background-color: #ff9f00;
+    }
+
+.tar {
+    text-align: right !important;
+}
+
+.tal {
+    text-align: left !important;
+}
+
+.small-text {
+    font-size: 13px;
+}
+
+#basad {
+    position: fixed;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+#top-header {
+    background-color: #FFF;
+    border: 0;
+    font-size: 17px;
+    padding-top: 10px;
+    height: 130px;
+}
+
+    #top-header #logo {
+        background: url('Images/logo.png') no-repeat center center;
+        height: 100px;
+    }
+
+#welcome {
+    padding-right: 0;
+    padding-left: 0;
+    float: right;
+}
+
+    #welcome.user-on {
+        padding-top: 70px;
+    }
+
+    #welcome.user-off {
+        margin-top: 25px;
+        width: 200px;
+    }
+
+#qshd {
+    padding-left: 0;
+}
+
+#user-name {
+    margin-left: 8px;
+}
+
+#welcome input {
+    height: 22px;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+#welcome > form > button {
+    background-color: #f26b44;
+    color: #FFF;
+    border: 0;
+    border-radius: 30px;
+    width: 90px;
+    padding: 4px;
+    margin-top: -1px;
+}
+
+#forgot-password {
+    position: absolute;
+    left: 2px;
+    bottom: 16px;
+}
+
+#quick-search {
+    position: relative;
+    top: 15px;
+}
+
+    #quick-search > form > input {
+        width: 100%;
+        padding-right: 8px;
+        padding-left: 28px;
+        border-radius: 15px;
+        border: 1px solid #e6e6e6;
+    }
+
+    #quick-search > form > span {
+        position: absolute;
+        left: 4px;
+        top: 3px;
+    }
+
+#header-details {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 43px;
+    color: #f26b44;
+}
+
+    #header-details .pn {
+        color: #000;
+        font-family: pt sans;
+    }
+
+#menu {
+    top: 130px;
+    background-color: #171615;
+    color: #fff;
+    height: 85px;
+    padding-top: 6px;
+    border-top: 4px solid #F26B44;
+    position: fixed;
+    width: 1024px;
+    z-index: 50;
+}
+
+    #menu img {
+        margin: 8px 0 0 8px;
+    }
+
+    #menu ul {
+        list-style: none;
+        position: relative;
+        display: inline-table;
+        padding-right: 10px;
+        background-color: #171615;
+    }
+
+        #menu ul ul {
+            display: none;
+            border-radius: 0px;
+            padding: 0;
+            position: absolute;
+            top: 100%;
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.88);
+            border-right: 5px solid #D5441A;
+        }
+
+        #menu ul li:hover > ul {
+            display: block;
+            box-shadow: 2px 2px 20px 0px #191919;
+        }
+
+        #menu ul li {
+            float: right;
+        }
+
+        #menu ul:after {
+            content: "";
+            clear: both;
+            display: block;
+        }
+
+        #menu ul li a:hover {
+            color: #f26b44;
+        }
+
+        #menu ul ul li {
+            float: right;
+            position: relative;
+            width: 190px;
+        }
+
+            #menu ul ul li:hover {
+                background-color: #333232;
+            }
+
+            #menu ul ul li a {
+                padding: 0 15px;
+                color: #fff;
+                font-size: 14px;
+                display: inline-block;
+                margin: 2px 0;
+            }
+
+        #menu ul ul > li:hover > a {
+            border-left: 5px solid #f26b44;
+            width: 190px;
+        }
+
+        #menu ul ul ul {
+            position: absolute;
+            right: 185px;
+            top: 0;
+            background-color: rgb(55, 54, 54);
+            z-index: 10;
+        }
+
+        #menu ul li a {
+            display: block;
+            padding: 11px 12px 6px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+    #menu > ul > li:hover {
+        border-top: 5px solid #F26B44;
+    }
+
+#page-title {
+    background-color: #F26B44;
+    color: #fff;
+    display: block;
+    margin-top: -20px;
+    padding: 0 30px;
+}
+
+    #page-title h1 {
+        line-height: 70px;
+        font-size: 25px;
+    }
+
+    #page-title > a {
+        color: #fff;
+        margin: 0;
+        position: relative;
+        top: -22px;
+    }
+
+/* HOME - BANNERS */
+#banners {
+    background: url(Images/bg1.png) repeat;
+    height: 450px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    max-width: 1024px;
+    z-index: 0;
+}
+
+    #banners .action {
+        color: #fff;
+        font-size: 40px;
+        opacity: 0.5;
+        cursor: pointer;
+        background-color: transparent;
+        position: absolute;
+        top: 0;
+        padding: 203px 5px;
+        z-index: 20;
+    }
+
+        #banners .action:hover {
+            opacity: 1;
+        }
+
+    #banners #prev {
+        left: 30px;
+    }
+
+    #banners #next {
+        right: 30px;
+    }
+
+#sequence {
+    top: 0;
+    left: 0;
+    padding: 0 40px;
+}
+
+    #sequence ul {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    #sequence h2,
+    #sequence h3 {
+        text-align: left;
+        left: 510px;
+    }
+
+    #sequence h3 {
+        margin: 0;
+        top: 460px !important;
+        font-family: Arial;
+    }
+
+#nav {
+    bottom: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+    #nav li {
+        display: inline-block !important;
+        height: 83px !important;
+        margin-left: -4px !important;
+    }
+
+    #nav img {
+        height: 83px;
+        width: 60px;
+    }
+
+#additions {
+    text-align: right;
+    padding: 0 10px;
+}
+
+    #additions p {
+        font-size: 17px;
+    }
+
+#about {
+    padding: 10px 10px;
+    line-height: 35px;
+    font-weight: bold;
+}
+
+    #about .paragraph h3 {
+        margin: 5px 0;
+        font-size: 18px;
+        line-height: 30px;
+    }
+
+.input-validation-error {
+    border-color: #FF3900 !important;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgb(255, 57, 0) !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgb(255, 57, 0) !important;
+}
+
+.field-validation-error {
+    color: #FF3900;
+    font-size: 12px;
+    padding-right: 10px;
+}
+
+#contact {
+    padding: 0 20px;
+    margin-bottom: 10px;
+}
+
+    #contact .form-group * {
+        display: block;
+        width: 60%;
+    }
+
+    #contact .form-group label, #contact .form-group .field-validation-error, #contact .form-group .field-validation-error span {
+        display: inline;
+    }
+
+    #contact .form-group .fw {
+        width: 100%;
+    }
+
+    #contact button {
+        background: #F83800;
+        color: #fff;
+        width: 120px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 0;
+    }
+
+        #contact button:hover {
+            background: #f26b44;
+        }
+
+#tnk-contact {
+    font-weight: bold;
+    font-size: 20px;
+    padding: 30px;
+    color: #555555;
+}
+
+#products-list {
+    padding: 50px 15px 0;
+}
+
+#simillar #products-list .product {
+    float: right;
+}
+
+#products-list .product {
+    display: inline-block;
+    width: 24%;
+    float: left;
+    margin: 5px 4px;
+    height: 270px;
+}
+
+    #products-list .product label {
+        font-size: 17px;
+        font-weight: normal;
+        color: #f26b44;
+        position: relative;
+        top: -15px;
+        right: 6px;
+    }
+
+
+#cat-tags {
+    list-style-type: none;
+    text-align: center;
+    padding: 0;
+}
+
+    #cat-tags .tag {
+        margin-bottom: 8px;
+        display: inline-block;
+    }
+
+        #cat-tags .tag a {
+            background-color: #ededed;
+            padding: 4px 12px;
+            border-radius: 6px;
+            color: #555555;
+            text-decoration: none;
+            -webkit-transition: all .5s ease;
+            -moz-transition: all .5s ease;
+            -o-transition: all .5s ease;
+            -ms-transition: all .5s ease;
+            font-weight: bold;
+        }
+
+            #cat-tags .tag a:hover {
+                background-color: #f26b44;
+                color: #fff;
+                border-radius: 0;
+            }
+
+#btns > a, #btns > button {
+    background-color: #f26b44;
+    color: #fff;
+    width: 110px;
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 20px;
+    margin-left: 15px;
+    font-weight: bold;
+    border: 0;
+}
+
+#simillar #products-list {
+    padding-top: 0;
+}
+
+#prod-table {
+    margin-bottom: 50px;
+}
+
+    #prod-table .prop input {
+        width: 40px;
+        font-size: 12px;
+    }
+
+    #prod-table .prop {
+        width: 46px;
+    }
+
+    #prod-table th, #prod-table td {
+        text-align: right;
+        padding: 4px 8px;
+    }
+
+    #prod-table th {
+        background-color: #F26B44;
+        color: #fff;
+        font-weight: normal;
+    }
+
+        #prod-table th:not(:first-child) {
+            text-align: center;
+        }
+
+    #prod-table table {
+        border: 1px solid #F26B44;
+    }
+
+    #prod-table tbody > tr.slct-prod {
+        background-color: #F26B44;
+    }
+
+/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
+/*                                 Shallva MVC Site - Desktop                                 */
+/* ########################################################################################## */
+
+/*--------------------------------------------------------------------------
++	Portfolio Style
+--------------------------------------------------------------------------*/
+
+
+.portfolio-item {
+    position: relative;
+    background: #FFF;
+    margin-bottom: 20px;
+    border: 8px solid #FFF;
+    -webkit-border-radius: 5px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 5px;
+    -moz-background-clip: padding;
+    border-radius: 5px;
+    background-clip: padding-box;
+    -webkit-box-shadow: inset 0 1px #fff,0 0 8px #c8cfe6;
+    -moz-box-shadow: inset 0 1px #fff,0 0 8px #c8cfe6;
+    box-shadow: inset 0 1px #fff,0 0 8px #c8cfe6;
+    color: inset 0 1px #fff,0 0 8px #c8cfe6;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+    .portfolio-item .portfolio-image {
+        overflow: hidden;
+        text-align: center;
+        position: relative;
+    }
+
+        .portfolio-item .portfolio-image img {
+            max-width: 100%;
+            -webkit-transition: all .25s ease;
+            -moz-transition: all .25s ease;
+            -o-transition: all .25s ease;
+            -ms-transition: all .25s ease;
+            transition: all .25s ease;
+        }
+
+    .portfolio-item:hover {
+        border: 0;
+    }
+
+        .portfolio-item:hover .portfolio-image img {
+            position: relative;
+            -webkit-transform: scale(1.1) rotate(5deg);
+            -moz-transform: scale(1.1) rotate(5deg);
+            -o-transform: scale(1.1) rotate(5deg);
+            -ms-transform: scale(1.1) rotate(5deg);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+    .portfolio-item ul {
+        list-style-type: none;
+        margin-left: 0;
+        margin-top: 20px;
+        text-align: center;
+        padding: 0;
+    }
+
+        .portfolio-item ul li {
+            line-height: 28px;
+        }
+
+    .portfolio-item .portfolio-project-name {
+        font-size: 1.3em;
+        text-transform: uppercase;
+    }
+
+    .portfolio-item .read-more {
+        height: 100%;
+    }
+
+    .portfolio-item .portfolio-info-fade {
+        -webkit-opacity: 0;
+        -moz-opacity: 0;
+        opacity: 0;
+        top: 0;
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        width: 100%;
+        height: 100%;
+        color: #FFF;
+    }
+
+    .portfolio-item:hover .portfolio-info-fade .read-more a {
+        width: 100%;
+        height: 100%;
+    }
+
+        .portfolio-item:hover .portfolio-info-fade .read-more a span {
+            color: #fff;
+            background-color: #F26B44;
+            border-radius: 25px;
+            padding: 6px 12px;
+            position: relative;
+            top: 40px;
+            transition: all .3s;
+            -moz-transition: all .3s;
+            -webkit-transition: all .3s;
+            -o-transition: all .3s;
+        }
+
+            .portfolio-item:hover .portfolio-info-fade .read-more a span:hover {
+                -webkit-box-shadow: 0 10px 3px -7px #8e8e8e, -1px -1px 1px #e6e6e6;
+                -moz-box-shadow: 0 10px 3px -7px #8e8e8e, -1px -1px 1px #e6e6e6;
+                box-shadow: 0 10px 3px -7px #8e8e8e, -1px -1px 1px #e6e6e6;
+            }
+
+    .portfolio-item .portfolio-info-fade ul {
+        padding: 0;
+        margin: 0;
+        height: 208px;
+    }
+
+        .portfolio-item .portfolio-info-fade ul li {
+            text-align: center;
+        }
+
+
+    .portfolio-item:hover .portfolio-info-fade {
+        display: block;
+        -webkit-opacity: 1;
+        -moz-opacity: 1;
+        opacity: 1;
+    }
+
+.lt-ie9 .portfolio-info-fade {
+    display: none;
+}
+
+.lt-ie9 .portfolio-item:hover .portfolio-info-fade {
+    display: block;
+}
+
+.portfolio-visit-btn {
+    padding-top: 15px;
+}
+
+.portfolio-item-description ul {
+    padding: 0;
+}
+
+
+/* WORKSHOPS */
+#workshop .workshopMonth {
+    background-color: #E6E6E6;
+    padding: 10px;
+    margin: -10px 0;
+}
+
+    #workshop .workshopMonth .dtls {
+        margin-top: 20px;
+    }
+
+    #workshop .workshopMonth img {
+        height: 135px;
+    }
+
+    #workshop .workshopMonth .gift {
+        float: left;
+        width: 100%;
+    }
+
+#workshop .comment {
+    padding: 15px 15px 0;
+    margin: 15px 0;
+}
+
+#workshop .choose-workshop {
+    padding: 0 15px;
+}
+
+    #workshop .choose-workshop > div {
+    }
+
+    #workshop .choose-workshop div > img {
+        cursor: pointer;
+        width: 100%;
+    }
+
+#workshop .sTable > h3 {
+    padding-right: 15px;
+}
+
+#workshop .sTable img {
+    width: 100px;
+    height: 100px;
+    float: left;
+}
+
+#workshop .sTable th, #workshop .sTable td {
+    width: 20%;
+    text-align: right;
+    padding: 5px 15px;
+}
+
+#workshop .conditions {
+    padding: 15px;
+}
+
+    #workshop .conditions .info {
+        padding: 15px;
+        background-color: #E6E6E6;
+    }
+
+        #workshop .conditions .info > h4 {
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+/* WORKSHOP MODAL */
+#sadna-ct.modal {
+    overflow: auto;
+}
+
+    #sadna-ct.modal .modal-header .close:hover {
+        color: #ff9f00;
+    }
+
+    #sadna-ct.modal .modal-header .close {
+        color: #f26b44;
+        opacity: 1;
+    }
+
+    #sadna-ct.modal .modal-header .modal-title {
+        font-weight: 700;
+    }
+
+    #sadna-ct.modal .modal-body button {
+        border: 0;
+        background-color: #F26B44;
+        color: #fff;
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    #sadna-ct.modal .modal-body form .details {
+        padding: 15px;
+    }
+
+    #sadna-ct.modal .modal-body form .form-group > label,
+    #sadna-ct.modal .modal-body form .form-group > input {
+        width: 100%;
+    }
+
+/* ######### CART ########*/
+#cart .modal-dialog {
+    width: 400px;
+}
+
+#cart .modal-header {
+    border: 0;
+}
+
+    #cart .modal-header .close {
+        font-size: 24px;
+    }
+
+#cart p {
+    text-align: center;
+    font-size: 20px;
+}
+
+#cart .modal-body div.row > div {
+    text-align: center;
+}
+
+    #cart .modal-body div.row > div button {
+        background-color: #F26B44;
+        border: 0;
+    }
+
+#cart-table {
+    width: 100%;
+}
+
+    #cart-table thead {
+        background-color: #E6E6E6;
+    }
+
+        #cart-table thead th {
+            color: rgba(0, 0, 0, 87);
+        }
+
+        #cart-table thead th, #cart-table tbody td {
+            text-align: right;
+            padding: 8px 16px;
+        }
+
+    #cart-table i {
+        cursor: pointer;
+    }
+
+#cart-form {
+    margin-top: 48px;
+    margin-bottom: 48px;
+}
+
+    #cart-form .btn {
+        margin-left: 16px;
+        background-color: #F26B44;
+        border: 0;
+        color: #fff;
+    }
+.no-cart {
+    font-size: 20px;
+    padding: 30px 30px;
+}
