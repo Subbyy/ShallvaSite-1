@@ -216,6 +216,7 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\WorkshopsController.cs" />
     <Compile Include="Filters\AdminOnlyFilter.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\OrderDay.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\PictureProduct.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductCategory.cs" />
@@ -2447,6 +2449,7 @@
     <Content Include="Views\Workshops\Partials\_WorkshopModal.cshtml" />
     <Content Include="Views\Workshops\Workshops.cshtml" />
     <Content Include="Views\Cart\Print.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

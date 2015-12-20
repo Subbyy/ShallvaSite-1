@@ -12,6 +12,7 @@ using System.IO;
 
 namespace ShallvaMVC.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         public ActionResult Index(int orderId = 0)

@@ -48,7 +48,7 @@
                     @if (Request.IsAuthenticated)
                     {
                         <div>ברוך הבא, <span id="user-name">@ShallvaUser.Current.Name</span> <span class="small-text">(<a href="javascript:document.getElementById('logoutForm').submit()">התנתק</a>)</span></div>
-                        <div><a href="#">היסטורית הזמנות</a></div>
+                        <div><a href="@Url.Action("Index", "Orders")">היסטורית הזמנות</a></div>
                     }
                     else
                     {

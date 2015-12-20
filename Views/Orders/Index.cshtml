@@ -1,0 +1,39 @@
+﻿﻿@using ShallvaMVC.Models;
+    ;
+
+@{
+    ViewBag.Title = "היסטורית הזמנות";
+    bool userConnected = Request.IsAuthenticated;
+    string message = ViewData["Message"] == null ? string.Empty : ViewData["Message"].ToString();
+}
+
+@model List<OrderModel>
+
+@section pageTitle
+{
+    <h1>היסטורית הזמנות</h1>
+}
+
+<ul id="orders">
+    @foreach (OrderModel order in Model)
+    {
+        <li>
+            <a href="@Url.Action("Index", "Cart", new { orderId = order.Id })">
+                <b>הזמנה מספר - @order.Id</b>
+                <span class="date">מתאריך - @order.Date.ToString("dd/MM/yyyy")</span>
+                <span class="sended">@(order.IsSended ? "טופל" : "לא טופל")</span>
+                <span class="approved">@(order.IsApprove ? "אושר" : "לא אושר")</span>
+            </a>
+        </li>
+    }
+</ul>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+
+    </script>
+}

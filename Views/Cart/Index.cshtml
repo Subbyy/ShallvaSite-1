@@ -28,8 +28,11 @@
                 <th class="props">תכונות</th>
                 <th class="qnt">כמות</th>
                 <th class="comm">הערה</th>
-                <th class="edit">&nbsp;</th>
-                <th class="remove">&nbsp;</th>
+                @if (!Model.IsApproved)
+                {
+                    <th class="edit">&nbsp;</th>
+                    <th class="remove">&nbsp;</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -37,21 +40,24 @@
             {
                 <tr data-id="@item.OrderId">
                     <td class="sku">@item.SKU</td>
-                    <td class="name">@item.Name</td>
+                    <td class="name"><a href="@Url.Action("Product", "Products", new { productId = item.PicId })">@item.Name</a></td>
                     <td class="props">@item.Property</td>
                     <td class="qnt">@item.Quantity</td>
                     <td class="qnti hide"><input type="text" class="quantity" value="@item.Quantity" /></td>
                     <td class="comm">@item.Comment</td>
                     <td class="commi hide"><input type="text" class="comment" value="@item.Comment" /></td>
-                    <td class="edit"><a><i class="glyphicon glyphicon-pencil"></i></a></td>
-                    <td class="edit edit-ok hide"><a><i class="glyphicon glyphicon-ok"></i></a></td>
-                    <td class="remove"><a><i class="glyphicon glyphicon-remove"></i></a></td>
+                    @if (!Model.IsApproved)
+                    {
+                        <td class="edit"><a><i class="glyphicon glyphicon-pencil"></i></a></td>
+                        <td class="edit edit-ok hide"><a><i class="glyphicon glyphicon-ok"></i></a></td>
+                        <td class="remove"><a><i class="glyphicon glyphicon-remove"></i></a></td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
 
-    using (Html.BeginForm("ConfirmOrder", "Cart", FormMethod.Post, new { id = "cart-form" }))
+    using (Html.BeginForm("ApproveOrder", "Orders", FormMethod.Post, new { id = "cart-form" }))
     {
         <div class="row">
             <div class="col-md-4 pull-right">
@@ -68,17 +74,28 @@
             </div>
         </div>
         <div class="btns">
+            <input type="hidden" id="orderId" name="orderId" value="@Model.OrderId" />
             <a href="@Url.Action("Print", "Cart", new { orderId = Model.OrderId })" target="_blank" class="btn btn-default pull-right">גרסה להדפסה</a>
-            <button type="button" class="btn btn-default pull-right">מחיקה</button>
-            <button type="submit" class="btn btn-default pull-right">אשר הזמנה</button>
+            @if (!Model.IsApproved)
+            {
+                <button type="button" class="btn btn-default pull-right" id="ro">מחיקה</button>
+                <button type="submit" class="btn btn-default pull-right">אשר הזמנה</button>
+            }
         </div>
+    }
+
+    using (Html.BeginForm("RemoveOrder", "Orders", FormMethod.Post, new { id = "roForm" }))
+    {
+        <input type="hidden" id="orderId" name="orderId" value="@Model.OrderId" />
     }
 
     @section scripts
 {
         <script type="text/javascript">
             $(document).ready(function () {
-
+                $('#ro').click(function () {
+                    $('#roForm').submit();
+                });
             });
 
             $(document).on('click', '.edit:not(.edit-ok) i', function () {

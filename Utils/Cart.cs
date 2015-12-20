@@ -14,5 +14,6 @@ namespace ShallvaMVC.Utils
         public DateTime OrderDate { get; set; }
         public string UserMessage { get; set; }
         public string UserName { get; set; }
+        public bool IsApproved { get; set; }
     }
 }

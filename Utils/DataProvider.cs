@@ -890,6 +890,7 @@ namespace ShallvaMVC.Utils
                                 {
                                     cart.UserMessage = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
                                     cart.UserName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                                    cart.IsApproved = reader.IsDBNull(2) ? false : reader.GetBoolean(2);
                                 }
                             }
                         }
@@ -1147,10 +1148,9 @@ namespace ShallvaMVC.Utils
 
         public static void ApproveOrder(int orderId, string msg, string username)
         {
-
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings[CONNECTION_STRING].ConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("RemoveOrder", conn))
+                using (SqlCommand cmd = new SqlCommand("ApproveOrder", conn))
                 {
                     cmd.Parameters.Add(new SqlParameter("@OrderId", orderId));
                     cmd.Parameters.Add(new SqlParameter("@UserMessage", msg));
@@ -1162,6 +1162,42 @@ namespace ShallvaMVC.Utils
                     conn.Close();
                 }
             }
+        }
+
+        public static List<OrderModel> GetOrders(int userId)
+        {
+            List<OrderModel> orders = new List<OrderModel>();
+
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings[CONNECTION_STRING].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("GetOrders", conn))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@UserId", userId));
+                   
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    conn.Open();
+
+                    using (IDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            OrderModel o = new OrderModel();
+                            o.Id = reader.GetInt32(0);
+                            int day = int.Parse(reader.GetString(1));
+                            int month = int.Parse(reader.GetString(2));
+                            int year = int.Parse(reader.GetString(3));
+                            o.Date = new DateTime(year, month, day);
+                            o.IsSended = reader.GetBoolean(4);
+                            o.IsApprove = reader.GetBoolean(5);
+                            orders.Add(o);
+                        }
+                    }
+
+                    conn.Close();
+                }
+            }
+
+            return orders;
         }
     }
 }

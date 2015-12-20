@@ -870,7 +870,31 @@ a {
         border: 0;
         color: #fff;
     }
+
 .no-cart {
     font-size: 20px;
     padding: 30px 30px;
+}
+
+#orders > li {
+    list-style-type: none;
+}
+
+    #orders > li > a {
+        font-size: 16px;
+        line-height: 40px;
+        text-decoration: none !important;
+    }
+
+    #orders > li > a:hover {
+        opacity: 0.56;
+    }
+
+#orders b, #orders .date {
+    font-size: 20px;
+    color: #000;
+}
+#orders .sended, #orders .approved{
+    margin: 0 8px;
+    color: #f26b44 !important;
 }
